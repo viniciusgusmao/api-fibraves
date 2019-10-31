@@ -1,8 +1,12 @@
 const express = require("express");
 const UsuarioController = require("./controllers/UsuarioController");
+const PerfilController = require("./controllers/PerfilController");
 
 const routes = express.Router();
 
-routes.post('/usuario',UsuarioController.store);
+routes.post('/usuarios',UsuarioController.store);
+routes.get('/usuarios',UsuarioController.index);
+
+routes.post('/perfil',PerfilController.store);
 
 module.exports = routes;

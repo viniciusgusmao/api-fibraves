@@ -24,7 +24,13 @@ module.exports = {
         senha: {
           type: Sequelize.STRING,
           allowNull: false
-        }
+        },
+        cpf: {
+          type: Sequelize.BIGINT(11),
+          allowNull: true
+        },
+        created_at: Sequelize.DATE,
+        updated_at: Sequelize.DATE
       });   
   },
 

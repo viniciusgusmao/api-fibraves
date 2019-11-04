@@ -8,13 +8,11 @@ class Contato extends Model {
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "Campo valor obrigatório"
+            msg: "Campo VALOR é obrigatório"
           }
         }
       },
-      tipocontato_id: {
-        type: Datatypes.INTEGER
-      }
+      tipocontato_id: Datatypes.INTEGER
     }, {
       sequelize,
       tableName: "contato"

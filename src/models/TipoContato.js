@@ -8,7 +8,7 @@ class TipoContato extends Model {
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "Campo valor obrigatório"
+            msg: "Campo VALOR é obrigatório"
           }
         }
       },

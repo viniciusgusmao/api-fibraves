@@ -8,7 +8,7 @@ class Perfil extends Model {
         allowNull: false,
         validate: {
           notEmpty: {
-            msg: "Campo obrigatório."
+            msg: "Campo NOME é obrigatório"
           }
         }
       },            

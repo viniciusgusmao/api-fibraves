@@ -6,10 +6,9 @@ class Usuario extends Model {
       nome: {
         type: DataTypes.STRING,
         validate: {
-          isAlpha: {
-            msg: "Digite apenas letras."
-          },
-          notEmpty: true 
+          notEmpty: {
+            msg: "Campo nome obrigatório"
+          } 
         }
       },
       email: {
@@ -41,7 +40,7 @@ class Usuario extends Model {
           }
         }
       },
-      cpf: DataTypes.BIGINT(11)
+      cpf: DataTypes.BIGINT
     },{
       tableName: "usuario",
       sequelize
@@ -49,10 +48,7 @@ class Usuario extends Model {
   }
 
   static associate(models){
-    this.belongsToMany(models.Perfil, {
-      foreignKey: 'usuario_id',
-      through: 'perfil_usuario'
-    })
+    this.belongsToMany(models.Perfil, { foreignKey: 'usuario_id', through: 'perfil_usuario' })
   }
 
 }

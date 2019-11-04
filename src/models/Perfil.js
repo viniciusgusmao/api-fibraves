@@ -7,9 +7,6 @@ class Perfil extends Model {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: {
-            msg: "Campo obrigatório."
-          },
           notEmpty: {
             msg: "Campo obrigatório."
           }
@@ -22,10 +19,7 @@ class Perfil extends Model {
   }
 
   static associate(models){
-    this.belongsToMany(models.Usuario, {
-      foreignKey: 'perfil_id',
-      through: 'perfil_usuario'
-    })
+    this.belongsToMany(models.Usuario, { foreignKey: 'perfil_id', through: 'perfil_usuario' })
   }
 
 }

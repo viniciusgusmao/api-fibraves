@@ -53,6 +53,9 @@ class Passaro extends Model {
   static associate(models){
     this.belongsTo(models.Usuario, { foreignKey: 'usuario_id' })
     this.belongsToMany(models.Usuario, { foreignKey: 'usuario_id', through: 'historico_passaro', as: 'passaro_historico' })
+    this.belongsTo(models.Especie,{ foreignKey: 'especie_id', as: "Especie" })
+    this.belongsToMany(models.Evento,{ foreignKey: 'passaro_id', through: 'passaro_evento', as: 'evento_passaro' })
+    this.hasMany(models.Marcacao, { foreignKey: 'passaro_id', as: 'marcacao_passaro' })
   }
 }
 

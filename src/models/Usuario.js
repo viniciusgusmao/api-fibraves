@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
+const bcrypt = require("bcryptjs");
 const utils = require("../utils");
 
 class Usuario extends Model {
@@ -9,7 +10,11 @@ class Usuario extends Model {
         validate: {
           notEmpty: {
             msg: "Campo NOME é obrigatório"
-          } 
+          },
+          isVerifySpaceBetweenWords(value){
+            if(value.indexOf(' ') == -1)
+              throw new Error("Digite um nome e sobrenome.")
+          }
         }
       },
       email: {
@@ -19,12 +24,13 @@ class Usuario extends Model {
             msg: "Campo E-MAIL é obrigatório"
           },
           isEmail: {
-            msg: "E-mail inválido"
+            msg: "E-mail inválido."
           }
         }
       },
       login: {
         type: DataTypes.STRING,
+        allowNull: true,
         validate: {
           len: {
             args: [6,30],
@@ -36,23 +42,23 @@ class Usuario extends Model {
         type: DataTypes.STRING,
         validate: {
           isAlphanumeric: {
-            msg: "Sua senha deve conter somente letras e números"
+            msg: "Sua senha deve conter somente letras e números."
           },
           len: {
             args: [6,50],
-            msg: "Sua senha deve ter no mínimo 6 e no máximo 50 caracteres"
+            msg: "Sua senha deve ter no mínimo 6 e no máximo 50 caracteres."
           }
         }
       },
       cpf: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull: true,
         validate: {
           isNumeric: {
             msg: "Este campo deve ser numérico"
           },
           isLengthToOnze(value){
-            if (value && value.length != 11)
+            if (value && String(value).length != 11)
               throw new Error("Este campo deve conter 11 dígitos")
           },
           isValidCPF(value){
@@ -63,6 +69,11 @@ class Usuario extends Model {
       },
       endereco_id: DataTypes.INTEGER
     },{
+      hooks: {
+        beforeSave: async (user, options) => {
+          user.senha = await bcrypt.hash(user.senha,8)
+        }
+      },
       tableName: "usuario",
       sequelize
     });

@@ -83,13 +83,13 @@ class Usuario extends Model {
   }
 
   static associate(models){
-    this.belongsToMany(models.Perfil, { foreignKey: 'usuario_id', through: 'perfil_usuario' })
-    this.hasMany(models.Passaro, { foreignKey: 'usuario_id', as: "Passaros" })
-    this.belongsToMany(models.Passaro, { foreignKey: 'usuario_id', through: 'historico_passaro', as: 'historico_passaro' })
-    this.hasOne(models.Endereco,{ foreignKey: 'endereco_id', as: 'usuario_endereco' })    
-    this.belongsToMany(models.Associacao, { foreignKey: 'usuario_id', through: 'usuario_associacao', as: 'associacao_usuario' })
-    this.belongsToMany(models.Evento,{ foreignKey: 'usuario_id', through: 'inscricao', as: 'inscricao_evento' })
-    this.hasMany(models.Marcacao, { foreignKey: 'usuario_id', as: 'marcacao_usuario' })
+    // this.belongsToMany(models.Perfil, { foreignKey: 'usuario_id', through: 'perfil_usuario' })
+    this.hasMany(models.Passaro, { foreignKey: { name: 'usuario_id', allowNull: true }, as: "Passaros" })
+    // this.belongsToMany(models.Passaro, { foreignKey: 'usuario_id', through: 'historico_passaro', as: 'historico_passaro' })
+    // this.hasOne(models.Endereco,{ foreignKey: 'endereco_id', as: 'usuario_endereco' })    
+    // this.belongsToMany(models.Associacao, { foreignKey: 'usuario_id', through: 'usuario_associacao', as: 'associacao_usuario' })
+    // this.belongsToMany(models.Evento,{ foreignKey: 'usuario_id', through: 'inscricao', as: 'inscricao_evento' })
+    // this.hasMany(models.Marcacao, { foreignKey: 'usuario_id', as: 'marcacao_usuario' })
   }
 
 }

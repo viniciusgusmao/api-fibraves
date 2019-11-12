@@ -43,7 +43,10 @@ class Passaro extends Model {
         allowNull: true,
       },
       especie_id: Datatypes.INTEGER,
-      usuario_id: Datatypes.INTEGER
+      usuario_id: {
+        allowNull: true,
+        type: Datatypes.INTEGER
+      }
     }, {
       sequelize,
       tableName: "passaro"

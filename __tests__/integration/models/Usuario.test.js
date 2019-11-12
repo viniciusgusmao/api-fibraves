@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 const connection = new Sequelize(dbConfig);
 Usuario.init(connection);
 
-describe("Usuário no momento do cadastro.", () => {
+describe("Usuário no momento do cadastro, fora da área logada.", () => {
   beforeEach(async () => {
     await Usuario.truncate()
   })
@@ -37,9 +37,10 @@ describe("Usuário no momento do cadastro.", () => {
     }
   })
   it('should return success when validate senha', async () => {
-      const senha = await bcrypt.hash("flamengo10",8);
-      const usuario = await factory.create("Usuario_Out",{ senha })
-      expect(usuario.senha).toBe(senha);
+    const senha = "flamengo10";
+    const usuario = await factory.create("Usuario_Out",{ senha })
+    const match = await bcrypt.compare("flamengo10",usuario.senha)
+    expect(match).toBeTruthy();
   })
   it('should return an error when validate senha fails because there isnt alphanumeric strings', async () => {
     try {

@@ -5,7 +5,7 @@ const Usuario = require("../src/models/Usuario");
 factory.define('Usuario_Out',Usuario, {
   nome: faker.name.findName(),
   email: faker.internet.email(),
-  senha: "asdasd456"
+  senha: "flamengo10"
 })
 
 

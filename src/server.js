@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require("cors");
-
 require("./database");
 const routes = require("./routes");
 
@@ -13,3 +12,5 @@ app.use(routes);
 app.listen(3333,() => {
   console.log('server up');
 });
+
+module.exports = app;

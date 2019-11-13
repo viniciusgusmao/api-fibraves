@@ -1,10 +1,10 @@
-const { Model, Datatypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 
 class FormaPagamento extends Model {
   static init(sequelize){
     super.init({
       nome: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -19,7 +19,7 @@ class FormaPagamento extends Model {
   }
 
   static associate(models){
-    this.belongsToMany(models.Evento, { foreignKey: 'formapagamento_id', through: 'evento_formapagamento', as: 'evento_formapagamento' })
+    // this.belongsToMany(models.Evento, { foreignKey: 'formapagamento_id', through: 'evento_formapagamento', as: 'evento_formapagamento' })
   }
 
 }

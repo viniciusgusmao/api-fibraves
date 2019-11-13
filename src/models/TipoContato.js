@@ -1,10 +1,10 @@
-const { Model, Datatypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 
 class TipoContato extends Model {
   static init(sequelize){
     super.init({
       valor: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -13,7 +13,7 @@ class TipoContato extends Model {
         }
       },
       tipocontato_id: {
-        type: Datatypes.INTEGER
+        type: DataTypes.INTEGER
       }
     }, {
       sequelize,
@@ -22,7 +22,7 @@ class TipoContato extends Model {
   }
 
   static associate(models){
-    this.hasMany(models.Contato, { foreignKey: "tipocontato_id" })
+    // this.hasMany(models.Contato, { foreignKey: "tipocontato_id" })
   }
 
 }

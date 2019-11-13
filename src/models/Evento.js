@@ -1,10 +1,10 @@
-const { Model, Datatypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 
 class Evento extends Model {
   static init(sequelize){
     super.init({
       nome: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -13,7 +13,7 @@ class Evento extends Model {
         }
       },
       data: {
-        type: Datatypes.DATE,
+        type: DataTypes.DATE,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -22,7 +22,7 @@ class Evento extends Model {
         }
       },
       horario: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -31,10 +31,10 @@ class Evento extends Model {
         }
       },
       obs: {
-        type: Datatypes.TEXT,
+        type: DataTypes.TEXT,
         allowNull: true
       },
-      endereco_id: Datatypes.INTEGER
+      endereco_id: DataTypes.INTEGER
     }, {
       sequelize,
       tableName: "associacao"
@@ -42,14 +42,14 @@ class Evento extends Model {
   }
 
   static associate(models){
-    this.hasOne(models.Endereco,{ foreignKey: 'endereco_id', as: 'evento_endereco' })
-    this.belongsToMany(models.Associacao, { foreignKey: 'evento_id', through: 'associacao_evento', as: 'evento_associacao' })
-    this.belongsToMany(models.FormaPagamento, { foreignKey: 'evento_id', through: 'evento_formapagamento', as: 'formapagamento_evento' })    
-    this.belongsToMany(models.Especie,{ foreignKey: 'evento_id', through: 'evento_especie', as: 'especie_evento' })
-    this.hasMany(models.Fase,{ foreignKey: 'evento_id', through: 'fase', as: 'fase_evento' })
-    this.belongsToMany(models.Passaro,{ foreignKey: 'evento_id', through: 'passaro_evento', as: 'passaro_evento' })
-    this.belongsToMany(models.Usuario,{ foreignKey: 'evento_id', through: 'inscricao', as: 'evento_inscricao' })
-    this.hasMany(models.Marcacao, { foreignKey: 'evento_id', as: 'marcacao_evento' })
+    // this.hasOne(models.Endereco,{ foreignKey: 'endereco_id', as: 'evento_endereco' })
+    // this.belongsToMany(models.Associacao, { foreignKey: 'evento_id', through: 'associacao_evento', as: 'evento_associacao' })
+    // this.belongsToMany(models.FormaPagamento, { foreignKey: 'evento_id', through: 'evento_formapagamento', as: 'formapagamento_evento' })    
+    // this.belongsToMany(models.Especie,{ foreignKey: 'evento_id', through: 'evento_especie', as: 'especie_evento' })
+    // this.hasMany(models.Fase,{ foreignKey: 'evento_id', through: 'fase', as: 'fase_evento' })
+    // this.belongsToMany(models.Passaro,{ foreignKey: 'evento_id', through: 'passaro_evento', as: 'passaro_evento' })
+    // this.belongsToMany(models.Usuario,{ foreignKey: 'evento_id', through: 'inscricao', as: 'evento_inscricao' })
+    // this.hasMany(models.Marcacao, { foreignKey: 'evento_id', as: 'marcacao_evento' })
     
   }
 

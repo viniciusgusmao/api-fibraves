@@ -1,10 +1,10 @@
-const { Model, Datatypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 
 class Endereco extends Model {
   static init(sequelize){
     super.init({
       rua: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -13,7 +13,7 @@ class Endereco extends Model {
         }
       },
       cep: {
-        type: Datatypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -26,15 +26,15 @@ class Endereco extends Model {
         }
       },
       complemento: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: true
       },
       numero: {
-        type: Datatypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: true
       },
       cidade: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: {
@@ -43,7 +43,7 @@ class Endereco extends Model {
         }
       },
       estado: {
-        type: Datatypes.STRING(2),
+        type: DataTypes.STRING(2),
         allowNull: false,
         validate: {
           notEmpty: {
@@ -58,9 +58,9 @@ class Endereco extends Model {
   }
 
   static associate(models){
-    this.hasOne(models.Usuario,{ foreignKey: 'endereco_id', as: 'endereco_usuario' })
-    this.hasOne(models.Associacao,{ foreignKey: 'endereco_id', as: 'endereco_associacao' })
-    this.hasOne(models.Evento,{ foreignKey: 'endereco_id', as: 'endereco_evento' })
+    // this.hasOne(models.Usuario,{ foreignKey: 'endereco_id', as: 'endereco_usuario' })
+    // this.hasOne(models.Associacao,{ foreignKey: 'endereco_id', as: 'endereco_associacao' })
+    // this.hasOne(models.Evento,{ foreignKey: 'endereco_id', as: 'endereco_evento' })
   }
 
 }

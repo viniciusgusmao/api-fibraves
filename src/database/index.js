@@ -1,18 +1,26 @@
-const Sequelize = require("sequelize");
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
 const dbConfig = require("../config/database");
 
-const Usuario = require("../models/Usuario");
-const Perfil = require("../models/Perfil");
-const Passaro = require("../models/Passaro");
+const db = {};
+const sequelize = new Sequelize(dbConfig);
 
-const connection = new Sequelize(dbConfig);
+fs
+  .readdirSync(path.resolve(__dirname,"../","models2"))
+  .filter(file => (file.indexOf('.') !== 0) && (file !== path.basename(__filename)) && (file.slice(-3) === '.js'))
+  .forEach((file) => {
+    const model = sequelize.import(path.join(__dirname,"../","models2", file));
+    db[model.name] = model;
+  });
 
-Usuario.init(connection);
-Perfil.init(connection);
-Passaro.init(connection);
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
-Usuario.associate(connection.models);
-Perfil.associate(connection.models);
-Passaro.associate(connection.models);
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-module.exports = connection;
+module.exports = db;

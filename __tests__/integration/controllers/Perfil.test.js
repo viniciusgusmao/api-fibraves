@@ -2,16 +2,16 @@ const request = require('supertest');
 const app = require("../../../src/app"); 
 
 describe("Rotas out Usuario", () => {
-  it("POST /usuarios", () => {
+  it("POST /perfil", () => {
     request(app)
-      .post('/usuarios')
-      .send({ nome: "Vinicius Gusmao", email: "vinicius-og@hotmail.com", senha: "flamengo10"} )
+      .post('/perfil')
+      .send({ nome: "Veterinario"} )
       .expect(200)
   })
   
-  it("GET /usuarios", () => {
+  it("GET /perfil", () => {
     request(app)
-      .get('/usuarios')
+      .get('/perfil')
       .expect(200)
   })
 })

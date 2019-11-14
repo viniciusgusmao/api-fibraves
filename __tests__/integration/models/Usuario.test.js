@@ -6,7 +6,10 @@ const bcrypt = require("bcryptjs");
 
 describe("Usuário no momento do cadastro, fora da área logada.", () => {
   beforeEach(async () => {
-    await Usuario.truncate()
+    await Usuario.destroy({
+      where: {},
+      truncate: false
+    })
   })
   it('should return success when validate nome', async () => {
       const usuario = await factory.create("Usuario_Out",{ nome: "vinicius gusmao" })

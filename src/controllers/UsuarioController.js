@@ -1,4 +1,4 @@
-const Usuario = require("../models/Usuario");
+const { Usuario } = require("../models");
 
 module.exports = {
   async index(req, res) {
@@ -9,9 +9,9 @@ module.exports = {
     const { nome, email, senha } = req.body;
     try {
       const usuario = await Usuario.create({ nome, email, senha })
-      return res.json(usuario);
+      return res.status(200).json(usuario);
     } catch(e) {
-      return res.json(e)
+      return res.status(403).json(e)
     }
   } 
 }

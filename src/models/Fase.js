@@ -1,42 +1,45 @@
-const { Model, Datatypes } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  const Fase = sequelize.define('Fase', {
+    max_classificados: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    minimo_canto: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    tipo_fase: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    nome_fase: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    pontos_distribuir: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    evento_id: DataTypes.INTEGER,
+    especie_id: DataTypes.INTEGER
+  },{
+    tableName: "fase"
+  });
 
-class Fase extends Model {
-  static init(sequelize){
-    super.init({
-      max_classificados: {
-        type: Datatypes.INTEGER,
-        allowNull: true
-      },
-      minimo_canto: {
-        type: Datatypes.INTEGER,
-        allowNull: true
-      },
-      tipo_fase: {
-        type: Datatypes.INTEGER,
-        allowNull: false
-      },
-      nome_fase: {
-        type: Datatypes.STRING,
-        allowNull: false
-      },
-      pontos_distribuir: {
-        type: Datatypes.INTEGER,
-        allowNull: true
-      },
-      evento_id: Datatypes.INTEGER,
-      especie_id: Datatypes.INTEGER
-    }, {
-      sequelize,
-      tableName: "fase"
+  Fase.associate = function(models){
+    Fase.belongsTo(models.Evento, {
+      foreignKey: "evento_id",
+      as: "EventoFase"
+    })
+    Fase.belongsTo(models.Especie, {
+      foreignKey: "especie_id",
+      as: "EspecieFase"
+    })
+    Fase.hasMany(models.Marcacao, {
+      foreignKey: "fase_id",
+      as: "MarcacaoFase"
     })
   }
 
-  static associate(models){
-    this.belongsTo(models.Evento, { foreignKey: 'evento_id', as: 'evento_fase' })
-    this.belongsTo(models.Passaro, { foreignKey: 'passaro_id', as: 'passaro_fase' })
-    this.hasMany(models.Marcacao,{ foreignKey: 'fase_id', as: 'marcacao_fase' })
-  }
-
+  return Fase;
 }
-
-module.exports = Fase;

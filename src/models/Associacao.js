@@ -1,38 +1,43 @@
-const { Model, Datatypes } = require("sequelize");
-
-class Associacao extends Model {
-  static init(sequelize){
-    super.init({
-      nome: {
-        type: Datatypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Campo NOME é obrigatório"
-          }
+module.exports = (sequelize, DataTypes) => {
+  const Associacao = sequelize.define('Associacao', {
+    nome: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Campo NOME é obrigatório"
         }
-      },
-      imagem: {
-        type: Datatypes.STRING,
-        allowNull: true
-      },
-      obs: {
-        type: Datatypes.TEXT,
-        allowNull: true
-      },
-      endereco_id: Datatypes.INTEGER
-    }, {
-      sequelize,
-      tableName: "associacao"
-    })
+      }
+    },
+    imagem: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    obs: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    endereco_id: DataTypes.INTEGER
+  },{
+    tableName: "associacao"
+  });
+
+  Associacao.associate = function(models){
+    Associacao.belongsToMany(models.Usuario, {
+      foreignKey: "associacao_id",
+      through: "usuario_associacao",
+      as: "AssociacaoUsuario"
+    });
+    Associacao.belongsToMany(models.Evento, {
+      foreignKey: "associacao_id",
+      through: "associacao_evento",
+      as: "AssociacaoEvento"
+    });
+    Associacao.hasOne(models.Endereco, {
+      foreignKey: "endereco_id",
+      as: "AssociacaoEndereco"
+    });
   }
 
-  static associate(models){
-    this.hasOne(models.Endereco,{ foreignKey: 'endereco_id', as: 'associacao_endereco' })
-    this.belongsToMany(models.Usuario, { foreignKey: 'associacao_id', through: 'usuario_associacao', as: 'usuario_associacao' })
-    this.belongsToMany(models.Evento, { foreignKey: 'associacao_id', through: 'associacao_evento', as: 'associacao_evento' })
-  }
-
+  return Associacao;
 }
-
-module.exports = Associacao;

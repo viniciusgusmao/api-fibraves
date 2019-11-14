@@ -1,27 +1,25 @@
-const { Model, DataTypes } = require('sequelize');
-
-class Perfil extends Model {
-  static init(sequelize){
-    super.init({
-      nome: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Campo NOME é obrigatório"
-          }
+module.exports = (sequelize, DataTypes) => {
+  const Perfil = sequelize.define('Perfil', {
+    nome: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Campo NOME é obrigatório"
         }
-      },            
-    },{
-      tableName: "perfil",
-      sequelize
-    });
+      }
+    },            
+  },{
+    tableName: "perfil"
+  });
+
+  Perfil.associate = function(models){
+    Perfil.belongsToMany(models.Usuario, {
+      foreignKey: "perfil_id",
+      through: "perfil_usuario",
+      as: "UsuarioPerfil"
+    })
   }
 
-  static associate(models){
-    // this.belongsToMany(models.Usuario, { foreignKey: 'perfil_id', through: 'perfil_usuario' })
-  }
-
+  return Perfil;
 }
-
-module.exports = Perfil;

@@ -1,30 +1,23 @@
-const { Model, DataTypes } = require("sequelize");
-
-class TipoContato extends Model {
-  static init(sequelize){
-    super.init({
-      valor: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Campo VALOR é obrigatório"
-          }
+module.exports = (sequelize, DataTypes) => {
+  const TipoContato = sequelize.define('TipoContato', {
+    nome: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Campo NOME é obrigatório"
         }
-      },
-      tipocontato_id: {
-        type: DataTypes.INTEGER
       }
-    }, {
-      sequelize,
-      tableName: "contato"
+    }
+  },{
+    tableName: "tipoContato"
+  });
+
+  TipoContato.associate = function(models){
+    TipoContato.hasMany(models.Contato, {
+      foreignKey: "tipocontato_id"
     })
   }
 
-  static associate(models){
-    // this.hasMany(models.Contato, { foreignKey: "tipocontato_id" })
-  }
-
+  return TipoContato;
 }
-
-module.exports = TipoContato;

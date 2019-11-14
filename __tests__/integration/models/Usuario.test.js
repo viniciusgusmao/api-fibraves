@@ -1,11 +1,8 @@
 const Sequelize = require("sequelize");
 const dbConfig = require("../../../src/config/database");
 const factory = require("../../factories");
-const Usuario = require("../../../src/models/Usuario");
+const { Usuario } = require("../../../src/models");
 const bcrypt = require("bcryptjs");
-
-const connection = new Sequelize(dbConfig);
-Usuario.init(connection);
 
 describe("Usuário no momento do cadastro, fora da área logada.", () => {
   beforeEach(async () => {

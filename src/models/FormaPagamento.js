@@ -1,27 +1,25 @@
-const { Model, DataTypes } = require("sequelize");
-
-class FormaPagamento extends Model {
-  static init(sequelize){
-    super.init({
-      nome: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Campo NOME é obrigatório"
-          }
+module.exports = (sequelize, DataTypes) => {
+  const FormaPagamento = sequelize.define('FormaPagamento', {
+    nome: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Campo NOME é obrigatório"
         }
       }
-    }, {
-      sequelize,
-      tableName: "formapagamento"
-    })
+    }
+  },{
+    tableName: "formaPagamento"
+  });
+
+  FormaPagamento.associate = function(models){
+    FormaPagamento.belongsToMany(models.Evento, {
+      foreignKey: "formapagamento_id",
+      through: "evento_formapagamento",
+      as: "EventoFormapagamento"
+    });
   }
 
-  static associate(models){
-    // this.belongsToMany(models.Evento, { foreignKey: 'formapagamento_id', through: 'evento_formapagamento', as: 'evento_formapagamento' })
-  }
-
+  return FormaPagamento;
 }
-
-module.exports = FormaPagamento;

@@ -2,8 +2,12 @@ const { Usuario } = require("../models");
 
 module.exports = {
   async index(req, res) {
-    const usuarios = await Usuario.findAll();
-    return res.json(usuarios)
+    try {
+      const usuarios = await Usuario.findAll();
+      return res.status(200).json(usuarios);
+    } catch(e) {
+      return res.status(403).json(e)
+    }
   },
   async store(req,res) {
     const { nome, email, senha } = req.body;

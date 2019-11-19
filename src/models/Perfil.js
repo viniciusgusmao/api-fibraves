@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Campo NOME é obrigatório"
+          msg: "Campo NOME é obrigatório."
         }
       }
     },            
@@ -17,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
     Perfil.belongsToMany(models.Usuario, {
       foreignKey: "perfil_id",
       through: "perfil_usuario",
-      as: "UsuarioPerfil"
+      as: {
+        singular: "UsuarioPerfil",
+        plural: "UsuarioPerfil"
+      }
     })
   }
 

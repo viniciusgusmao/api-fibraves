@@ -1,6 +1,6 @@
 const { factory } = require("factory-girl");
 const faker = require("faker");
-const { Usuario } = require("../src/models");
+const { Usuario, Perfil } = require("../src/models");
 
 factory.define('Usuario_Out',Usuario, {
   nome: faker.name.findName(),
@@ -8,5 +8,8 @@ factory.define('Usuario_Out',Usuario, {
   senha: "flamengo10"
 })
 
+factory.define('Perfil',Perfil, {
+  nome: faker.name.findName()
+})
 
 module.exports = factory;

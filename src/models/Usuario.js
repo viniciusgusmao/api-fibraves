@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
+      unique: true,
       validate: {
         notEmpty: {
           msg: "Campo E-MAIL é obrigatório"
@@ -94,7 +95,10 @@ module.exports = (sequelize, DataTypes) => {
     Usuario.belongsToMany(models.Perfil, {
       foreignKey: "usuario_id",
       through: "perfil_usuario",
-      as: "PerfilUsuario"
+      as: {
+        singular: "PerfilUsuario",
+        plural: "PerfilUsuario"
+      }
     });
     Usuario.belongsToMany(models.Associacao, {
       foreignKey: "usuario_id",

@@ -1,4 +1,4 @@
-const { Usuario } = require("../models");
+const { Usuario, Perfil } = require("../models");
 
 module.exports = {
   async index(req, res) {
@@ -17,5 +17,24 @@ module.exports = {
     } catch(e) {
       return res.status(403).json(e)
     }
-  } 
+  }, 
+  async storePerfil(req,res) {    
+    const { usuario_id } = req.params;
+    const { perfil_id } = req.body;
+    try {
+      const usuario = await Usuario.findByPk(usuario_id);   
+      
+      if (!usuario)
+        return res.status(400).json({ error: "Usuário não encontrado." })
+
+      const perfil = await Perfil.findByPk(perfil_id);  
+      
+      await usuario.addPerfilUsuario(perfil);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      return res.status(400).json({ error: String(e) });
+    } 
+  
+  }
 }

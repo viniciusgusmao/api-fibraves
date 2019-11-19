@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
-      unique: true,
+      unique: {
+        args: true,
+        msg: "Este e-mail já está em uso no sistema."
+      },
       validate: {
         notEmpty: {
           msg: "Campo E-MAIL é obrigatório"
@@ -65,6 +68,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    status: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1
+    },
     endereco_id: {
       type: DataTypes.INTEGER,
       allowNull: true
@@ -94,10 +101,10 @@ module.exports = (sequelize, DataTypes) => {
     });
     Usuario.belongsToMany(models.Perfil, {
       foreignKey: "usuario_id",
-      through: "perfil_usuario",
+      through: models.UsuarioPerfil,
       as: {
         singular: "PerfilUsuario",
-        plural: "PerfilUsuario"
+        plural: "PerfisUsuario"
       }
     });
     Usuario.belongsToMany(models.Associacao, {

@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   Perfil.associate = function(models){
     Perfil.belongsToMany(models.Usuario, {
       foreignKey: "perfil_id",
-      through: "perfil_usuario",
+      through: models.UsuarioPerfil,
       as: {
         singular: "UsuarioPerfil",
-        plural: "UsuarioPerfil"
+        plural: "UsuariosPerfil"
       }
     })
   }

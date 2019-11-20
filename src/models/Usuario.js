@@ -117,9 +117,10 @@ module.exports = (sequelize, DataTypes) => {
       through: "inscricao",
       as: "InscricaoEvento"
     });
-    Usuario.hasOne(models.Endereco, {
+    Usuario.belongsTo(models.Endereco, {
       foreignKey: "endereco_id",
-      as: "UsuarioEndereco"
+      targetKey: "endereco_id",
+      as: "endereco"
     })
   }
 

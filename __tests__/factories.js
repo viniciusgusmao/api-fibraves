@@ -1,11 +1,22 @@
 const { factory } = require("factory-girl");
 const faker = require("faker");
-const { Usuario, Perfil } = require("../src/models");
+faker.locale = "pt_BR";
+const { Usuario, Perfil, Endereco } = require("../src/models");
 
-factory.define('Usuario_Out',Usuario, {
+factory.define('Usuario',Usuario, {
   nome: faker.name.findName(),
   email: faker.internet.email(),
-  senha: "flamengo10"
+  senha: "flamengo10",
+  endereco_id: null
+})
+
+factory.define('Endereco',Endereco, {
+  rua: faker.address.streetName(),
+  cep: "29060120",
+  complemento: faker.address.secondaryAddress(),
+  numero: 10,
+  cidade: faker.address.city(),
+  estado: faker.address.state(),
 })
 
 factory.define('Perfil',Perfil, {

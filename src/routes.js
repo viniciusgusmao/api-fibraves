@@ -6,6 +6,8 @@ const routes = express.Router();
 
 routes.post('/usuarios',UsuarioController.store);
 routes.post('/usuarios/:usuario_id/perfil',UsuarioController.storePerfil);
+routes.post('/usuarios/:usuario_id/endereco',UsuarioController.storeEndereco);
+routes.put('/usuarios/:usuario_id/endereco',UsuarioController.updateEndereco);
 routes.delete('/usuarios/:usuario_id/perfil',UsuarioController.removePerfil);
 routes.get('/usuarios',UsuarioController.index);
 routes.get('/usuarios/:usuario_id',UsuarioController.show);

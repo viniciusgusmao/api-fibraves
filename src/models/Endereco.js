@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Campo CEP é obrigatório"
         },
         isEqualToOito(value){
-          if(value.length != 8)
-            throw new Error("Este campo deve possuir 8 caracteres");
+          if(String(value).length != 8)
+            throw new Error("O campo CEP deve possuir 8 caracteres");
         }
       }
     },
@@ -53,10 +53,6 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Endereco.associate = function(models){
-    Endereco.hasOne(models.Usuario, {
-      foreignKey: "endereco_id",
-      as: "EnderecoUsuario"
-    });
     Endereco.hasOne(models.Associacao, {
       foreignKey: "endereco_id",
       as: "EnderecoAssociacao"

@@ -6,7 +6,7 @@ module.exports = {
     const { usuario_id } = req.params;
     const usuario = await Usuario.findByPk(usuario_id,{
       attributes: [ "nome", "email" ],
-      include: [ "PerfisUsuario" ]
+      include: [ "PerfisUsuario", "UsuarioEndereco" ]
     });
     
     if (!usuario)
@@ -16,6 +16,7 @@ module.exports = {
   },
   async index(req, res) {
     try {
+      console.log("ei porra")
       const usuarios = await Usuario.findAll({
         attributes: [ 'nome', 'email', "cpf", "login" ],
         where: {
@@ -23,11 +24,14 @@ module.exports = {
         },
         include: [
           {
-            association: "PerfisUsuario",
-            attributes: [ "nome" ]
-          }
+            association: 'endereco',
+          },
+          // {
+          //   association: "PerfisUsuario",
+          //   attributes: [ "nome" ]
+          // }
         ]
-      });
+      });     
       return res.status(200).json(usuarios);
     } catch(e) {
       return res.status(403).json(e)
@@ -76,5 +80,48 @@ module.exports = {
     } catch(e) {
       return res.status(400).json({ error: String(e) });
     }
-  }
+  },
+  async storeEndereco(req,res) {
+    const { usuario_id } = req.params;
+    const { rua, cep, complemento, numero, cidade, estado } = req.body;
+    try {
+      const usuario = await Usuario.findByPk(usuario_id);
+      if (!usuario)
+        return res.status(403).json({ error: "Usuário não encontrado" })
+
+      const endereco = await Endereco.create({ rua, cep, complemento, numero, cidade, estado });
+      await Usuario.update({
+        endereco_id: endereco.id
+      },{
+        where: {
+          id: usuario_id
+        }
+      })   
+      return res.status(200).json({ success: true })
+    } catch(e){
+      return res.status(400).json({ error: String(e) });
+    }
+  },
+  async updateEndereco(req,res){
+    const { usuario_id } = req.params;
+    const { rua, cep, complemento, numero, cidade, estado } = req.body;
+    try {
+      const usuario = await Usuario.findByPk(usuario_id);
+      if (!usuario)
+        return res.status(403).json({ error: "Usuário não encontrado" })
+
+      if (!usuario.endereco_id)
+        return res.status(403).json({ error: "Endereço não encontrado" })
+
+      await Endereco.update({
+        rua, cep, complemento, numero, cidade, estado
+      },{
+        where: {
+          id: usuario.endereco_id
+        }
+      })
+    } catch(e) {
+      return res.status(400).json({ error: String(e) });
+    }
+  } 
 }

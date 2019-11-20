@@ -2,7 +2,7 @@ const factory = require("../../factories");
 const { Perfil } = require("../../../src/models");
 
 describe("CRUD Perfil.", () => {
-  beforeEach(async () => {
+  afterEach(async () => {
     await Perfil.destroy({
       where: {},
       truncate: false

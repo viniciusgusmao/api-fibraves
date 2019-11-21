@@ -16,7 +16,7 @@ factory.define('Endereco',Endereco, {
   complemento: faker.address.secondaryAddress(),
   numero: 10,
   cidade: faker.address.city(),
-  estado: faker.address.state(),
+  estado: "ES",
 })
 
 factory.define('Perfil',Perfil, {

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Campo RUA é obrigatório"
+          msg: "O campo RUA é obrigatório."
         }
       }
     },
@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Campo CEP é obrigatório"
+          msg: "O campo CEP é obrigatório."
         },
         isEqualToOito(value){
           if(String(value).length != 8)
-            throw new Error("O campo CEP deve possuir 8 caracteres");
+            throw new Error("O campo CEP deve possuir 8 caracteres.");
         }
       }
     },
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Campo CIDADE é obrigatório"
+          msg: "O campo CIDADE é obrigatório."
         }
       }
     },
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Campo ESTADO é obrigatório"
+          msg: "O campo ESTADO é obrigatório."
         }
       }
     }      
@@ -61,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "endereco_id",
       as: "EnderecoEvento"
     });
+    
   }
 
   return Endereco;

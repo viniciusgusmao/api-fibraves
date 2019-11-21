@@ -13,25 +13,26 @@ describe("Usuário no momento do cadastro, fora da área logada.", () => {
       const usuario = await factory.create("Usuario",{ nome: "vinicius gusmao" })
       expect(usuario.nome).toBe("vinicius gusmao");
   })
+
   it('should return an error when validate nome with input with a single word', async () => {
     try {
-      const usuario = await factory.create("Usuario",{ nome: "vinicius" })
+      await factory.create("Usuario",{ nome: "vinicius" })
     } catch(e){
-      expect(String(e)).toBe("SequelizeValidationError: Validation error: Digite um nome e sobrenome.");
+      const res = String(e).includes("Digite um nome e sobrenome.");
+      expect(res).toBeTruthy();
     }
   })
   it('should return success when validate email', async () => {
-    try {
       const usuario = await factory.create("Usuario",{ email: "vinicius-og@hotmail.com" })
-    } catch(e){
       expect(usuario.email).toBe("vinicius-og@hotmail.com");
-    }
   })
+
   it('should return an error when validate email fails', async () => {
     try {
-      const usuario = await factory.create("Usuario",{ email: "vinicius" })
+      await factory.create("Usuario",{ email: "vinicius" })
     } catch(e){
-      expect(String(e)).toBe("SequelizeValidationError: Validation error: E-mail inválido.");
+      const res = String(e).includes("E-mail inválido.");
+      expect(res).toBeTruthy();
     }
   })
   it('should return success when validate senha', async () => {
@@ -42,16 +43,18 @@ describe("Usuário no momento do cadastro, fora da área logada.", () => {
   })
   it('should return an error when validate senha fails because there isnt alphanumeric strings', async () => {
     try {
-      const usuario = await factory.create("Usuario",{ senha: "456132" })
+      await factory.create("Usuario",{ senha: "456132" })
     } catch(e){
-      expect(String(e)).toBe("SequelizeValidationError: Validation error: Sua senha deve conter somente letras e números.");
+      const res = String(e).includes("Sua senha deve conter somente letras e números.");
+      expect(res).toBeTruthy();
     }
   })
   it('should return an error when validate senha fails because there isnt min 6 or max 50 characters', async () => {
     try {
       const usuario = await factory.create("Usuario",{ senha: "asd23" })
     } catch(e){
-      expect(String(e)).toBe("SequelizeValidationError: Validation error: Sua senha deve ter no mínimo 6 e no máximo 50 caracteres.");
+      const res = String(e).includes("Sua senha deve ter no mínimo 6 e no máximo 50 caracteres.");
+      expect(res).toBeTruthy();
     }
   })
 
@@ -60,7 +63,8 @@ describe("Usuário no momento do cadastro, fora da área logada.", () => {
       const usuario = await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
       const usuario_2 = await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
     } catch(e) {
-      expect(String(e)).toBe("SequelizeUniqueConstraintError: Este e-mail já está em uso no sistema.");
+      const res = String(e).includes("Este e-mail já está em uso no sistema.");
+      expect(res).toBeTruthy();
     }
   })
 })

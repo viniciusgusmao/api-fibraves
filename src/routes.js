@@ -1,6 +1,6 @@
 const express = require("express");
-const UsuarioController = require("./controllers/UsuarioController");
-const PerfilController = require("./controllers/PerfilController");
+const UsuarioController = require("@controllers/UsuarioController");
+const PerfilController = require("@controllers/PerfilController");
 
 const routes = express.Router();
 

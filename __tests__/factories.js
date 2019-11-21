@@ -1,7 +1,7 @@
 const { factory } = require("factory-girl");
 const faker = require("faker");
 faker.locale = "pt_BR";
-const { Usuario, Perfil, Endereco } = require("../src/models");
+const { Usuario, Perfil, Endereco } = require("@models");
 
 factory.define('Usuario',Usuario, {
   nome: faker.name.findName(),

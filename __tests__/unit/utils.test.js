@@ -1,4 +1,4 @@
-const utils = require("../../src/utils")
+const utils = require("@app/utils")
 
 describe('Utils', () => {
   describe("Validar CPF", () => {

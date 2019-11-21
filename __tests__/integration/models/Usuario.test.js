@@ -1,5 +1,5 @@
-const factory = require("../../factories");
-const { Usuario } = require("../../../src/models");
+const factory = require("@test/factories");
+const { Usuario } = require("@models");
 const bcrypt = require("bcryptjs");
 
 describe("Usuário no momento do cadastro, fora da área logada.", () => {

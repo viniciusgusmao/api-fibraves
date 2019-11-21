@@ -43,7 +43,6 @@ describe("CRUD Endereco", () => {
     try {
       await factory.create("Endereco",{ estado: "" })
     } catch(e){
-      console.log(String(e));
       const res = String(e).includes("O campo ESTADO é obrigatório.");
       expect(res).toBeTruthy();
     }

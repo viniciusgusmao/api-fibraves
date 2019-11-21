@@ -3,9 +3,24 @@ module.exports = (sequelize, DataTypes) => {
     nome: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: "Este nome já existe no sistema."
+      },
       validate: {
         notEmpty: {
-          msg: "Campo NOME é obrigatório"
+          msg: "O campo NOME é obrigatório."
+        }
+      }
+    },
+    validacao: {
+      type: DataTypes.ENUM('telefone','email','url','nenhuma'),
+      allowNull: false,
+      validate: {
+        isVerifyValue(value) {
+          let arr = ['telefone','email','url','nenhuma'];
+          if (!arr.includes(value))
+            throw new Error("Somente permitido validações: telefone, email, url e nenhuma.");
         }
       }
     }

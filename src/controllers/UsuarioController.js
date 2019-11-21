@@ -105,40 +105,28 @@ module.exports = {
       if (!usuario)
         return res.status(403).json({ error: "Usuário não encontrado" })
 
-      const endereco = await models.Endereco.create({ rua, cep, complemento, numero, cidade, estado });
-      await models.Usuario.update({
-        endereco_id: endereco.id
-      },{
-        where: {
-          id: usuario_id
-        }
-      })   
+      if (!usuario.endereco_id){
+        const endereco = await models.Endereco.create({ rua, cep, complemento, numero, cidade, estado });
+        await models.Usuario.update({
+          endereco_id: endereco.id
+        },{
+          where: {
+            id: usuario_id
+          }
+        })   
+      } else {
+        await models.Endereco.update({
+          id: usuario.endereco_id
+        },{ 
+          rua, cep, complemento, numero, cidade, estado 
+        })
+      }
+      
       return res.status(200).json({ success: true })
     } catch(e){
       console.log(String(e))
       return res.status(400).json({ error: String(e) });
     }
   },
-  async updateEndereco(req,res){
-    const { usuario_id } = req.params;
-    const { rua, cep, complemento, numero, cidade, estado } = req.body;
-    try {
-      const usuario = await models.Usuario.findByPk(usuario_id);
-      if (!usuario)
-        return res.status(403).json({ error: "Usuário não encontrado" })
-
-      if (!usuario.endereco_id)
-        return res.status(403).json({ error: "Endereço não encontrado" })
-
-      await Endereco.update({
-        rua, cep, complemento, numero, cidade, estado
-      },{
-        where: {
-          id: usuario.endereco_id
-        }
-      })
-    } catch(e) {
-      return res.status(400).json({ error: String(e) });
-    }
-  } 
+  
 }

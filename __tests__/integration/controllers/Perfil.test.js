@@ -2,7 +2,7 @@ const request = require('supertest');
 const { Perfil } = require("@models");
 const app = require("@app/app"); 
 
-describe("Rotas out Usuario", () => {
+describe("Rotas Perfil", () => {
   beforeEach( async () => {
     await Perfil.destroy({
       where: {},

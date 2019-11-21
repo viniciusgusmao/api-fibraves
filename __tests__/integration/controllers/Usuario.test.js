@@ -79,7 +79,7 @@ describe("Usuario", () => {
     const response = await request(app)
                             .post(`/usuarios/${usuario.id}/endereco`)
                             .send(end);
-    expect(response.statusCode).toBe(200)                      
+    expect(response.statusCode).toBe(200);                     
   })
 
 

@@ -104,7 +104,7 @@ module.exports = (sequelize, DataTypes) => {
       through: models.UsuarioPerfil,
       as: {
         singular: "PerfilUsuario",
-        plural: "PerfisUsuario"
+        plural: "perfis"
       }
     });
     Usuario.belongsToMany(models.Associacao, {
@@ -119,8 +119,8 @@ module.exports = (sequelize, DataTypes) => {
     });
     Usuario.belongsTo(models.Endereco, {
       foreignKey: "endereco_id",
-      targetKey: "endereco_id",
-      as: "endereco"
+      onDelete: "cascade",
+      as: 'endereco'
     })
   }
 

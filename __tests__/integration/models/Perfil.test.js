@@ -15,9 +15,10 @@ describe("CRUD Perfil.", () => {
 
   it('should return fail when validate nome', async () => {
     try {
-      const perfil = await factory.create("Perfil", { nome: "" })
+      await factory.create("Perfil", { nome: "" })
     } catch(e){
-      expect(String(e)).toBe("SequelizeValidationError: Validation error: Campo NOME é obrigatório.");
+      const res = String(e).includes("Campo NOME é obrigatório.");
+      expect(res).toBeTruthy()
     }     
   })
   

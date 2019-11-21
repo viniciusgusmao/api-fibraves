@@ -1,35 +1,50 @@
 const { Op } = require("sequelize");
-const { Usuario, Perfil } = require("../models");
+const models = require("../models");
 
 module.exports = {
   async show(req,res) {
     const { usuario_id } = req.params;
-    const usuario = await Usuario.findByPk(usuario_id,{
-      attributes: [ "nome", "email" ],
-      include: [ "PerfisUsuario", "UsuarioEndereco" ]
-    });
-    
-    if (!usuario)
-      return res.status(400).json({ error: "Usuário não encontrado" });
-    
-    return res.status(200).json(usuario);
+    try {
+      const usuario = await models.Usuario.findByPk(usuario_id,{
+        attributes: [ "nome", "email" ],
+        include: [ 
+          {
+            association: "perfis" 
+          }, 
+          {
+            model: models.Endereco,
+            as: 'endereco',
+            attributes: [ "rua", "cep", "complemento", "numero", "cidade", "estado" ]
+          }
+        ]
+      });
+      
+      if (!usuario)
+        return res.status(400).json({ error: "Usuário não encontrado" });
+      
+      return res.status(200).json(usuario);
+    } catch(e) {
+      console.log(String(e));
+      return res.status(403).json({error: String(e)})
+    }
   },
   async index(req, res) {
     try {
-      console.log("ei porra")
-      const usuarios = await Usuario.findAll({
+      const usuarios = await models.Usuario.findAll({
         attributes: [ 'nome', 'email', "cpf", "login" ],
         where: {
           status: 1
         },
         include: [
           {
-            association: 'endereco',
+            model: models.Endereco,
+            as: 'endereco',
+            attributes: [ "rua", "cep", "complemento", "numero", "cidade", "estado" ]
           },
-          // {
-          //   association: "PerfisUsuario",
-          //   attributes: [ "nome" ]
-          // }
+          {
+            association: "perfis",
+            attributes: [ "nome" ]
+          }
         ]
       });     
       return res.status(200).json(usuarios);
@@ -40,7 +55,7 @@ module.exports = {
   async store(req,res) {
     const { nome, email, senha } = req.body;
     try {
-      const usuario = await Usuario.create({ nome, email, senha })
+      const usuario = await models.Usuario.create({ nome, email, senha })
       return res.status(200).json(usuario);
     } catch(e) {
       return res.status(403).json(e)
@@ -50,12 +65,12 @@ module.exports = {
     const { usuario_id } = req.params;
     const { perfil_id, ctf, crmv } = req.body;
     try {
-      const usuario = await Usuario.findByPk(usuario_id);   
+      const usuario = await models.Usuario.findByPk(usuario_id);   
       
       if (!usuario)
         return res.status(400).json({ error: "Usuário não encontrado." })
 
-      const perfil = await Perfil.findByPk(perfil_id);  
+      const perfil = await models.Perfil.findByPk(perfil_id);  
       
       await usuario.addPerfilUsuario(perfil,{ through: { ctf, crmv } });
       return res.status(200).json({ success: true });
@@ -68,12 +83,12 @@ module.exports = {
     const { usuario_id } = req.params;
     const { perfil_id } = req.body;
     try {
-      const usuario = await Usuario.findByPk(usuario_id);   
+      const usuario = await models.Usuario.findByPk(usuario_id);   
       
       if (!usuario)
         return res.status(400).json({ error: "Usuário não encontrado." })
 
-      const perfil = await Perfil.findByPk(perfil_id);
+      const perfil = await models.Perfil.findByPk(perfil_id);
       await usuario.removePerfilUsuario(perfil);
       return res.status(200).json({ success: true });
 
@@ -85,12 +100,12 @@ module.exports = {
     const { usuario_id } = req.params;
     const { rua, cep, complemento, numero, cidade, estado } = req.body;
     try {
-      const usuario = await Usuario.findByPk(usuario_id);
+      const usuario = await models.Usuario.findByPk(usuario_id);
       if (!usuario)
         return res.status(403).json({ error: "Usuário não encontrado" })
 
-      const endereco = await Endereco.create({ rua, cep, complemento, numero, cidade, estado });
-      await Usuario.update({
+      const endereco = await models.Endereco.create({ rua, cep, complemento, numero, cidade, estado });
+      await models.Usuario.update({
         endereco_id: endereco.id
       },{
         where: {
@@ -99,6 +114,7 @@ module.exports = {
       })   
       return res.status(200).json({ success: true })
     } catch(e){
+      console.log(String(e))
       return res.status(400).json({ error: String(e) });
     }
   },
@@ -106,7 +122,7 @@ module.exports = {
     const { usuario_id } = req.params;
     const { rua, cep, complemento, numero, cidade, estado } = req.body;
     try {
-      const usuario = await Usuario.findByPk(usuario_id);
+      const usuario = await models.Usuario.findByPk(usuario_id);
       if (!usuario)
         return res.status(403).json({ error: "Usuário não encontrado" })
 

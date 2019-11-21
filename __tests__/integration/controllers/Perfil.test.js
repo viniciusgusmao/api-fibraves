@@ -1,6 +1,6 @@
 const request = require('supertest');
-const { Perfil } = require("../../../src/models");
-const app = require("../../../src/app"); 
+const { Perfil } = require("@models");
+const app = require("@app/app"); 
 
 describe("Rotas out Usuario", () => {
   beforeEach( async () => {

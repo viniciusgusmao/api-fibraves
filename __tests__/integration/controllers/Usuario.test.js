@@ -1,7 +1,7 @@
 const request = require('supertest');
-const factory = require("../../factories");
-const { Usuario, Endereco, Perfil } = require("../../../src/models");
-const app = require("../../../src/app"); 
+const factory = require("@test/factories");
+const { Usuario, Endereco, Perfil } = require("@models");
+const app = require("@app/app"); 
 
 describe("Usuario", () => {
   afterEach(async () => {

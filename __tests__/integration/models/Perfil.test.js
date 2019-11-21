@@ -1,5 +1,5 @@
-const factory = require("../../factories");
-const { Perfil } = require("../../../src/models");
+const factory = require("@test/factories");
+const { Perfil } = require("@models");
 
 describe("CRUD Perfil.", () => {
   afterEach(async () => {

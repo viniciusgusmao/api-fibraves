@@ -6,7 +6,15 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "pretest": "cross-env NODE_ENV=test sequelize db:migrate",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "postinstall": "link-module-alias"
+  },
+  "_moduleAliases": {
+    "@controllers": "src/controllers",
+    "@models": "src/models",
+    "@test": "__tests__",
+    "@app": "src",
+    "@root": "."
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -14,6 +22,8 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "link-module-alias": "^1.2.0",
+    "module-alias": "^2.2.2",
     "nodemon": "^1.19.4",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",

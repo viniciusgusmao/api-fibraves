@@ -1,5 +1,5 @@
-const factory = require("../../factories");
-const { Endereco } = require("../../../src/models");
+const factory = require("@test/factories");
+const { Endereco } = require("@models");
 
 describe("CRUD Endereco", () => {
   afterEach(async () => {

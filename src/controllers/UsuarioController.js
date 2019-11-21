@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const models = require("../models");
+const models = require("@models");
 
 module.exports = {
   async show(req,res) {
@@ -76,6 +76,7 @@ module.exports = {
       return res.status(200).json({ success: true });
     
     } catch(e){
+      console.log(String(e));
       return res.status(400).json({ error: String(e) });
     } 
   },

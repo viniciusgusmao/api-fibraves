@@ -121,12 +121,50 @@ module.exports = {
           rua, cep, complemento, numero, cidade, estado 
         })
       }
-      
+
       return res.status(200).json({ success: true })
     } catch(e){
       console.log(String(e))
-      return res.status(400).json({ error: String(e) });
+      return res.status(400).json({ error: e });
     }
   },
+  async storeContato(req,res){
+    const { usuario_id } = req.params;
+    const { tipocontato_id, valor } = req.body; 
+    try {
+      const usuario = await models.Usuario.findByPk(usuario_id)
+      if (!usuario)
+        return res.status(400).json({error: "Usuário não encontrado."})
+
+      await models.Contato.create({
+        valor, tipocontato_id, usuario_id 
+      })
+      return res.status(200).json({success: true})
+
+    } catch(e){
+      return res.status(400).json({error: e})
+    }
+  },
+  async updateContato(req,res){
+    const { contato_id } = req.params;
+    const { valor } = req.body; 
+    try {
+      const contato = await models.Contato.findByPk(contato_id)
+      if (!contato)
+        return res.status(400).json({error: "Contato não encontrado."})
+
+      await models.Contato.update({
+        where: {
+          id: contato_id
+        }
+      }, {
+        valor
+      })
+      return res.status(200).json({success: true})
+
+    } catch(e){
+      return res.status(400).json({error: e})
+    }
+  }
   
 }

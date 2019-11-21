@@ -11,6 +11,8 @@ routes.post('/usuarios/:usuario_id/endereco',UsuarioController.storeEndereco);
 routes.delete('/usuarios/:usuario_id/perfil',UsuarioController.removePerfil);
 routes.get('/usuarios',UsuarioController.index);
 routes.get('/usuarios/:usuario_id',UsuarioController.show);
+routes.post('/usuarios/:usuario_id/contato',UsuarioController.storeContato);
+routes.put('/contato/:contato_id',UsuarioController.updateContato);
 
 routes.post('/tipocontato',TipoContatoController.store);
 routes.get('/tipocontato',TipoContatoController.index);

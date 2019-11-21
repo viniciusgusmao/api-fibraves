@@ -82,7 +82,12 @@ describe("Usuario", () => {
     expect(response.statusCode).toBe(200);                     
   })
 
- 
-
-  
+  it("POST /usuarios/:usuario_id/contato", async () => {
+    const usuario = await factory.create("Usuario");
+    const tipoContato = await factory.create("TipoContato");
+    const response = await request(app)
+                            .post(`/usuarios/${usuario.id}/contato`)
+                            .send({ tipocontato_id: tipoContato.id, valor: "27 9999-9999"  })
+    expect(response.statusCode).toBe(200);                            
+  })
 })

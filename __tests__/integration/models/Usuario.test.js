@@ -1,13 +1,20 @@
 const factory = require("@test/factories");
-const { Usuario } = require("@models");
+const models = require("@models");
 const bcrypt = require("bcryptjs");
 
 describe("Usuário no momento do cadastro, fora da área logada.", () => {
+  beforeEach(async () => {
+    await factory.create("Endereco"); 
+    await factory.create("TipoContato"); 
+  })
   afterEach(async () => {
-    await Usuario.destroy({
-      where: {},
-      truncate: false
-    })
+    let excModels = [ "Usuario", "Contato", "TipoContato", "Endereco" ];
+    for(let m of excModels){
+      await models[[m]].destroy({
+        where: {},
+        truncate: false
+      })
+    }
   })
   it('should return success when validate nome', async () => {
       const usuario = await factory.create("Usuario",{ nome: "vinicius gusmao" })
@@ -60,11 +67,16 @@ describe("Usuário no momento do cadastro, fora da área logada.", () => {
 
   it("should return an error if email already exist", async () => {
     try {
-      const usuario = await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
-      const usuario_2 = await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
+      await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
+      await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
     } catch(e) {
       const res = String(e).includes("Este e-mail já está em uso no sistema.");
       expect(res).toBeTruthy();
     }
+  })
+  it("should return true to insert new contato", async () => {
+      const usuario = await factory.create("Usuario");
+      const contato = await factory.create("Contato",{ usuario_id: usuario.id })
+      expect(contato.usuario_id).toBe(usuario.id);
   })
 })

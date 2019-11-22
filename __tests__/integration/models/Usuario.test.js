@@ -2,7 +2,7 @@ const factory = require("@test/factories");
 const models = require("@models");
 const bcrypt = require("bcryptjs");
 
-describe("Usuário no momento do cadastro, fora da área logada.", () => {
+describe("Usuario", () => {
   beforeEach(async () => {
     await factory.create("Endereco"); 
     await factory.create("TipoContato"); 
@@ -70,13 +70,10 @@ describe("Usuário no momento do cadastro, fora da área logada.", () => {
       await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
       await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
     } catch(e) {
+      console.log(String(e));
       const res = String(e).includes("Este e-mail já está em uso no sistema.");
       expect(res).toBeTruthy();
     }
   })
-  it("should return true to insert new contato", async () => {
-      const usuario = await factory.create("Usuario");
-      const contato = await factory.create("Contato",{ usuario_id: usuario.id })
-      expect(contato.usuario_id).toBe(usuario.id);
-  })
+
 })

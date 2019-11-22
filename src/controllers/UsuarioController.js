@@ -1,5 +1,21 @@
 const { Op } = require("sequelize");
+const utils = require("@app/utils");
 const models = require("@models");
+
+const validarContato = (mascara,valor) => {
+  switch(mascara){
+    case 'telefone':
+      if (!utils.validarTelefone(valor))
+        return "Telefone em um formato inválido.";
+      break;
+    case 'url':
+      if (!utils.validarURL(valor))
+        return "URL inválida.";
+      break;
+    default:
+      return null;
+  }
+}
 
 module.exports = {
   async show(req,res) {
@@ -77,7 +93,7 @@ module.exports = {
     
     } catch(e){
       console.log(String(e));
-      return res.status(400).json({ error: String(e) });
+      return res.status(403).json({ error: String(e) });
     } 
   },
   async removePerfil(req,res) {
@@ -116,9 +132,11 @@ module.exports = {
         })   
       } else {
         await models.Endereco.update({
-          id: usuario.endereco_id
-        },{ 
           rua, cep, complemento, numero, cidade, estado 
+        },{ 
+          where: {
+            id: usuario.endereco_id
+          }
         })
       }
 
@@ -132,38 +150,49 @@ module.exports = {
     const { usuario_id } = req.params;
     const { tipocontato_id, valor } = req.body; 
     try {
-      const usuario = await models.Usuario.findByPk(usuario_id)
+      const usuario = await models.Usuario.findByPk(usuario_id);
       if (!usuario)
-        return res.status(400).json({error: "Usuário não encontrado."})
+        return res.status(400).json({error: "Usuário não encontrado."});
+      
+      const tipocontato = await models.TipoContato.findByPk(tipocontato_id);
+      const resposta = validarContato(tipocontato.validacao,valor);
+      if (resposta)
+        return res.status(403).json({error: resposta})
 
       await models.Contato.create({
         valor, tipocontato_id, usuario_id 
       })
       return res.status(200).json({success: true})
-
     } catch(e){
-      return res.status(400).json({error: e})
+      console.log(String(e));
+      return res.status(400).json({error: String(e)})
     }
   },
   async updateContato(req,res){
     const { contato_id } = req.params;
     const { valor } = req.body; 
     try {
-      const contato = await models.Contato.findByPk(contato_id)
+      const contato = await models.Contato.findByPk(contato_id);
       if (!contato)
         return res.status(400).json({error: "Contato não encontrado."})
 
+      const tipocontato = await models.TipoContato.findByPk(contato.tipocontato_id);
+      const resposta = validarContato(tipocontato.validacao,valor);
+      if (resposta)
+        return res.status(403).json({error: resposta})
+
       await models.Contato.update({
+        valor
+      }, {
         where: {
           id: contato_id
         }
-      }, {
-        valor
       })
       return res.status(200).json({success: true})
 
     } catch(e){
-      return res.status(400).json({error: e})
+      console.log(String(e))
+      return res.status(400).json({error: String(e)})
     }
   }
   

@@ -14,11 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     validacao: {
-      type: DataTypes.ENUM('telefone','email','url','nenhuma'),
+      type: DataTypes.ENUM('telefone','url','nenhuma'),
       allowNull: false,
+      defaultValue: "nenhuma",
       validate: {
         isVerifyValue(value) {
-          let arr = ['telefone','email','url','nenhuma'];
+          let arr = ['telefone','url','nenhuma'];
           if (!arr.includes(value))
             throw new Error("Somente permitido validações: telefone, email, url e nenhuma.");
         }

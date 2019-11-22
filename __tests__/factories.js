@@ -5,7 +5,7 @@ faker.locale = "pt_BR";
 const models = require("@models");
 
 factory.define('Usuario',models.Usuario, {
-  id: factory.sequence("Usuario.id",(n) => n),
+  id: factory.sequence("Usuario.id",(n) => n+1),
   nome: faker.name.findName(),
   email: faker.internet.email(),
   senha: "flamengo10",
@@ -13,14 +13,14 @@ factory.define('Usuario',models.Usuario, {
 })
 
 factory.define('Contato',models.Contato, {
-  id: factory.sequence("Contato.id",(n) => n),
+  id: factory.sequence("Contato.id",(n) => n+1),
   valor: faker.phone.phoneNumberFormat(),
   tipocontato_id: factory.assoc("TipoContato","id"),
   usuario_id: factory.assoc("Usuario","id"),
 })
 
 factory.define('Endereco',models.Endereco, {
-  id: factory.sequence("Endereco.id", (n) => n),
+  id: factory.sequence("Endereco.id", (n) => n+1),
   rua: faker.address.streetName(),
   cep: "29060120",
   complemento: faker.address.secondaryAddress(),
@@ -30,12 +30,12 @@ factory.define('Endereco',models.Endereco, {
 })
 
 factory.define('Perfil',models.Perfil, {
-  id: factory.sequence("Perfil.id",(n) => n),
+  id: factory.sequence("Perfil.id",(n) => n+1),
   nome: faker.name.findName()
 })
 
 factory.define('TipoContato',models.TipoContato, {
-  id: factory.sequence("TipoContato", (n) => n),
+  id: factory.sequence("TipoContato", (n) => n+1),
   nome: "Telefone",
   validacao: "telefone"
 })

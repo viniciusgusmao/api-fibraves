@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   },{
-    tableName: "tipoContato"
+    tableName: "tipocontato"
   });
 
   TipoContato.associate = function(models){

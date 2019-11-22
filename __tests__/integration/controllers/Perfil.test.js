@@ -12,14 +12,14 @@ describe("Rotas Perfil", () => {
   
   it("GET /perfil", async () => {
     const response = await request(app)
-    .get('/perfil');
+                               .get('/perfil');
     expect(response.statusCode).toBe(200)
   })
 
   it("POST /perfil", async () => {
     const response = await request(app)
-      .post('/perfil')
-      .send({ nome: "Veterinario"} );
+                                .post('/perfil')
+                                .send({ nome: "Veterinario"} );
     expect(response.statusCode).toBe(200)
       
   })

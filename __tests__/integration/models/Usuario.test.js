@@ -58,7 +58,7 @@ describe("Usuario", () => {
   })
   it('should return an error when validate senha fails because there isnt min 6 or max 50 characters', async () => {
     try {
-      const usuario = await factory.create("Usuario",{ senha: "asd23" })
+      await factory.create("Usuario",{ senha: "asd23" })
     } catch(e){
       const res = String(e).includes("Sua senha deve ter no mínimo 6 e no máximo 50 caracteres.");
       expect(res).toBeTruthy();
@@ -70,7 +70,6 @@ describe("Usuario", () => {
       await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
       await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
     } catch(e) {
-      console.log(String(e));
       const res = String(e).includes("Este e-mail já está em uso no sistema.");
       expect(res).toBeTruthy();
     }

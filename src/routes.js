@@ -16,8 +16,12 @@ routes.put('/usuarios/contato/:contato_id',UsuarioController.updateContato);
 
 routes.post('/tipocontato',TipoContatoController.store);
 routes.get('/tipocontato',TipoContatoController.index);
+routes.put('/tipocontato/:id',TipoContatoController.update);
+routes.delete('/tipocontato/:id',TipoContatoController.delete);
 
 routes.post('/perfil',PerfilController.store);
+routes.put('/perfil/:id',PerfilController.update);
+routes.delete('/perfil/:id',PerfilController.delete);
 routes.get('/perfil',PerfilController.index);
 
 module.exports = routes;

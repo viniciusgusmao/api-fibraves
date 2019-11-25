@@ -4,8 +4,10 @@ const bcrypt = require("bcryptjs");
 
 describe("Usuario", () => {
   beforeEach(async () => {
-    await factory.create("Endereco"); 
-    await factory.create("TipoContato"); 
+    let excModels = [ "Endereco", "TipoContato"];
+    for(let m of excModels){
+      await factory.create(m);
+    }
   })
   afterEach(async () => {
     let excModels = [ "Usuario", "Contato", "TipoContato", "Endereco" ];

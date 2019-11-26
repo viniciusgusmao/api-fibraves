@@ -31,7 +31,9 @@ module.exports = (sequelize, DataTypes) => {
 
   TipoContato.associate = function(models){
     TipoContato.hasMany(models.Contato, {
-      foreignKey: "tipocontato_id"
+      foreignKey: "tipocontato_id",
+      onDelete: "cascade",
+      hooks: true
     })
   }
 

@@ -1,16 +1,16 @@
 const factory = require("@test/factories");
 const models = require("@models");
 
-describe("CRUD Endereco", () => {
-  afterEach(async () => {
-    let excModels = [ "Endereco" ];
-    for(let m of excModels){
-      await models[[m]].destroy({
-        where: {},
-        truncate: false
-      })
-    }
-  })
+describe.skip("CRUD Endereco", () => {
+  // afterEach(async () => {
+  //   let excModels = [ "Endereco" ];
+  //   for(let m of excModels){
+  //     await models[[m]].destroy({
+  //       where: {},
+  //       truncate: false
+  //     })
+  //   }
+  // })
   it('should return success when validate rua', async () => {
       const obj = await factory.create("Endereco",{ rua: "rua a" })
       expect(obj.rua).toBe("rua a");

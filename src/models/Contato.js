@@ -1,3 +1,5 @@
+const { Usuario, TipoContato } = require("@models");
+
 module.exports = (sequelize, DataTypes) => {
   const Contato = sequelize.define('Contato', {
     valor: {
@@ -11,11 +13,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     usuario_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: Usuario,
+        key: 'id',
+        onDelete: 'CASCADE'
+      }
     },
     tipocontato_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: TipoContato,
+        key: 'id',
+        onDelete: 'CASCADE'
+      }
     }
   },{
     tableName: "contato"
@@ -24,6 +36,8 @@ module.exports = (sequelize, DataTypes) => {
   Contato.associate = function(models){
     Contato.belongsTo(models.Usuario, {
       foreignKey: "usuario_id",
+      onDelete: 'cascade',
+      hooks: true,
       as: {
         singular: "usuario",
         plural: "usuarios"
@@ -31,6 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     }),
     Contato.belongsTo(models.TipoContato, {
       foreignKey: "tipocontato_id",
+      onDelete: 'cascade',
+      hooks: true,
       as: "TiposContato"
     })
   }

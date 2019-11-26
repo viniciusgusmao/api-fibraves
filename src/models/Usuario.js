@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const { Endereco } = require("@models");
 
 module.exports = (sequelize, DataTypes) => {
   const Usuario = sequelize.define('Usuario', {
@@ -16,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: true,
       unique: {
         args: true,
         msg: "Este e-mail já está em uso no sistema."
@@ -74,7 +76,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     endereco_id: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: Endereco,
+        key: 'id',
+        onDelete: 'CASCADE'
+      }
     }
   },{
     hooks: {
@@ -109,6 +116,8 @@ module.exports = (sequelize, DataTypes) => {
     Usuario.belongsToMany(models.Perfil, {
       foreignKey: "usuario_id",
       through: models.UsuarioPerfil,
+      onDelete: 'cascade',
+      hooks: true,
       as: {
         singular: "PerfilUsuario",
         plural: "perfis"
@@ -127,6 +136,7 @@ module.exports = (sequelize, DataTypes) => {
     Usuario.belongsTo(models.Endereco, {
       foreignKey: "endereco_id",
       onDelete: "cascade",
+      hooks: true,
       as: 'endereco'
     })
   }

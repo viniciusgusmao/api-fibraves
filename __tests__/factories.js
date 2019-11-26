@@ -5,7 +5,7 @@ faker.locale = "pt_BR";
 const models = require("@models");
 
 factory.define('Usuario',models.Usuario, {
-  id: factory.sequence("Usuario.id",(n) => n+1),
+  id: faker.random.number(),
   nome: faker.name.findName(),
   email: faker.internet.email(),
   senha: "flamengo10",
@@ -20,7 +20,7 @@ factory.define('Contato',models.Contato, {
 })
 
 factory.define('Endereco',models.Endereco, {
-  id: factory.sequence("Endereco.id", (n) => n+1),
+  id: faker.random.number(),
   rua: faker.address.streetName(),
   cep: "29060120",
   complemento: faker.address.secondaryAddress(),

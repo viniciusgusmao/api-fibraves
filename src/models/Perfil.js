@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     Perfil.belongsToMany(models.Usuario, {
       foreignKey: "perfil_id",
       through: models.UsuarioPerfil,
+      onDelete: "cascade",
+      hooks: true,
       as: {
         singular: "UsuarioPerfil",
         plural: "UsuariosPerfil"

@@ -1,80 +1,88 @@
 const factory = require("@test/factories");
 const models = require("@models");
 const bcrypt = require("bcryptjs");
+const faker = require("faker");
+faker.locale = "pt_BR";
+
+let endereco;
 
 describe("Usuario", () => {
-  beforeEach(async () => {
-    let excModels = [ "Endereco", "TipoContato"];
-    for(let m of excModels){
-      await factory.create(m);
-    }
+  beforeAll(async () => {
+    endereco = await factory.create("Endereco"); 
   })
-  afterEach(async () => {
-    let excModels = [ "Usuario", "Contato", "TipoContato", "Endereco" ];
-    for(let m of excModels){
-      await models[[m]].destroy({
-        where: {},
-        truncate: false
-      })
-    }
-  })
-  it('should return success when validate nome', async () => {
-      const usuario = await factory.create("Usuario",{ nome: "vinicius gusmao" })
+  it.only('should return success when validate nome', async () => { 
+    expect.assertions(1);
+    try {
+      const usuario = await factory.create("Usuario",{ nome: "vinicius gusmao", endereco_id: endereco.id })        
       expect(usuario.nome).toBe("vinicius gusmao");
+    } catch(e) {
+      console.log(String(e))
+    }
   })
 
-  it('should return an error when validate nome with input with a single word', async () => {
+  it('should return an error when validate nome with input with a single word', async (done) => {
     try {
-      await factory.create("Usuario",{ nome: "vinicius" })
-    } catch(e){
+      await factory.create("Usuario",{ nome: "vinicius", endereco_id: endereco.id })
+    } catch(e){      
       const res = String(e).includes("Digite um nome e sobrenome.");
       expect(res).toBeTruthy();
     }
+    done();
   })
-  it('should return success when validate email', async () => {
-      const usuario = await factory.create("Usuario",{ email: "vinicius-og@hotmail.com" })
-      expect(usuario.email).toBe("vinicius-og@hotmail.com");
+  it('should return success when validate email', async (done) => {
+    const email = faker.internet.email();
+    const usuario = await factory.create("Usuario",{ email, endereco_id: endereco.id })
+    expect(usuario.email).toBe(email);
+    done();
   })
 
-  it('should return an error when validate email fails', async () => {
+  it('should return an error when validate email fails', async (done) => {
     try {
-      await factory.create("Usuario",{ email: "vinicius" })
+      await factory.create("Usuario",{ email: "vinicius", endereco_id: endereco.id })
     } catch(e){
       const res = String(e).includes("E-mail inválido.");
       expect(res).toBeTruthy();
     }
+    done();
   })
-  it('should return success when validate senha', async () => {
+  it('should return success when validate senha', async (done) => {
     const senha = "flamengo10";
-    const usuario = await factory.create("Usuario",{ senha })
+    const usuario = await factory.create("Usuario",{ senha, endereco_id: endereco.id })
     const match = await bcrypt.compare("flamengo10",usuario.senha)
     expect(match).toBeTruthy();
+    done();
   })
-  it('should return an error when validate senha fails because there isnt alphanumeric strings', async () => {
+  it('should return an error when validate senha fails because there isnt alphanumeric strings', async (done) => {
     try {
-      await factory.create("Usuario",{ senha: "456132" })
+      await factory.create("Usuario",{ senha: "456132", endereco_id: endereco.id })
     } catch(e){
       const res = String(e).includes("Sua senha deve conter somente letras e números.");
       expect(res).toBeTruthy();
     }
+    done();
   })
-  it('should return an error when validate senha fails because there isnt min 6 or max 50 characters', async () => {
+  it('should return an error when validate senha fails because there isnt min 6 or max 50 characters', async (done) => {
     try {
-      await factory.create("Usuario",{ senha: "asd23" })
-    } catch(e){
+      await factory.create("Usuario",{ senha: "asd23", endereco_id: endereco.id })
+    } catch(e){      
       const res = String(e).includes("Sua senha deve ter no mínimo 6 e no máximo 50 caracteres.");
       expect(res).toBeTruthy();
     }
+    done();
   })
 
-  it("should return an error if email already exist", async () => {
+  it("should return an error if email already exist", async (done) => {
     try {
-      await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
-      await factory.create("Usuario",{ email: "vinicius@hotmail.com" })
+      const email = faker.internet.email();
+      console.log(email);
+      await factory.create("Usuario",{ email, endereco_id: endereco.id })
+      await factory.create("Usuario",{ email, endereco_id: endereco.id })
     } catch(e) {
+      console.log(String(e));
       const res = String(e).includes("Este e-mail já está em uso no sistema.");
       expect(res).toBeTruthy();
     }
+    done();
   })
 
 })

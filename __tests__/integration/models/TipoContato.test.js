@@ -1,15 +1,12 @@
 const factory = require("@test/factories");
 const models = require("@models");
 
-describe("CRUD TipoContato.", () => {
-  afterEach(async () => {
-    let excModels = [ "TipoContato", ];
-    for(let m of excModels){
-      await models[[m]].destroy({
-        where: {},
-        truncate: false
-      })
-    }
+describe.skip("CRUD TipoContato.", () => {
+  afterAll(async () => {
+    await models.TipoContato.destroy({
+      where: {},
+      truncate: false
+    })
   })
   it('should return fail when nome is empty', async () => {
     try { 

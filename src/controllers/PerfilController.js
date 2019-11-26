@@ -27,23 +27,16 @@ module.exports = {
       });
       return res.status(200).json(perfil)
     } catch(e) {
-      console.log(String(e));
       return res.status(403).json({error: String(e)})
     }
   },
   async delete(req,res) {
     const { id } = req.params;
     try {
-      const usuarios = await models.Perfil.findAll({
-        attributes: [ "nome" ],
-        include:[ { 
-            model: models.Usuario,
-            as: "UsuariosPerfil" 
-          } 
-        ]
-      })
-      console.log(usuarios.UsuariosPerfil);
-      if (usuarios.UsuariosPerfil)
+      const perfil = await models.Perfil.findByPk(id);
+      const usuarios = await perfil.getUsuariosPerfil();
+      
+      if (usuarios)
         return res.status(400).json({error: "Erro ao excluir, existem usuários ligados à este perfil."})
 
       await models.Perfil.destroy({
@@ -54,7 +47,6 @@ module.exports = {
       
       return res.status(200).json({success: "Perfil excluído com sucesso."})
     } catch(e) {
-      console.log(String(e))
       return res.status(403).json({error: String(e)})
     }
   },

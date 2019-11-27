@@ -1,7 +1,7 @@
 const factory = require("@test/factories");
 const models = require("@models");
 
-describe.skip("CRUD TipoContato.", () => {
+describe("CRUD TipoContato.", () => {
   afterAll(async () => {
     await models.TipoContato.destroy({
       where: {},

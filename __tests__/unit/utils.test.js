@@ -1,6 +1,6 @@
 const utils = require("@app/utils")
 
-describe.skip('Utils', () => {
+describe('Utils', () => {
   describe("Validar CPF", () => {
     it('should return true to a valid CPF', () => {
       const cpf = 12163793788;

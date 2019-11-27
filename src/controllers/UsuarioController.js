@@ -65,16 +65,17 @@ module.exports = {
       });     
       return res.status(200).json(usuarios);
     } catch(e) {
-      return res.status(403).json(e)
+      return res.status(403).json({error: String(e)})
     }
   },
   async store(req,res) {
     const { nome, email, senha } = req.body;
     try {
-      const usuario = await models.Usuario.create({ nome, email, senha })
+      const usuario = await models.Usuario.create({ nome, email, senha });
       return res.status(200).json(usuario);
     } catch(e) {
-      return res.status(403).json(e)
+      console.log(String(e));
+      return res.status(403).json({error: String(e)})
     }
   }, 
   async storePerfil(req,res) {    
@@ -143,7 +144,7 @@ module.exports = {
       return res.status(200).json({ success: true })
     } catch(e){
       console.log(String(e))
-      return res.status(400).json({ error: e });
+      return res.status(400).json({ error: String(e) });
     }
   },
   async storeContato(req,res){

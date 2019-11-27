@@ -37,7 +37,6 @@ module.exports = {
   },
   async delete(req,res){
     const { id } = req.params;
-    const { nome, validacao } = req.body;
     try {
       const contato = await models.Contato.findAndCountAll({
         where: {

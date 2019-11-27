@@ -6,7 +6,7 @@ faker.locale = "pt_BR";
 
 let endereco;
 
-describe.skip("Usuario", () => {
+describe("Usuario", () => {
   beforeAll(async () => {
     endereco = await factory.create("Endereco"); 
   })

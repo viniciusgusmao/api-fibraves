@@ -1,7 +1,11 @@
 const express = require("express");
+const multer = require("multer");
+
 const UsuarioController = require("@controllers/UsuarioController");
 const PerfilController = require("@controllers/PerfilController");
 const TipoContatoController = require("@controllers/TipoContatoController");
+const AssociacaoController = require("@controllers/AssociacaoController");
+const multerConfig = require("@app/config/multerConfig");
 
 const routes = express.Router();
 
@@ -23,5 +27,7 @@ routes.post('/perfil',PerfilController.store);
 routes.put('/perfil/:id',PerfilController.update);
 routes.delete('/perfil/:id',PerfilController.delete);
 routes.get('/perfil',PerfilController.index);
+
+routes.post('/associacoes', multer(multerConfig).single("imagem"), AssociacaoController.store);
 
 module.exports = routes;

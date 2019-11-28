@@ -28,6 +28,10 @@ routes.put('/perfil/:id',PerfilController.update);
 routes.delete('/perfil/:id',PerfilController.delete);
 routes.get('/perfil',PerfilController.index);
 
-routes.post('/associacoes', multer(multerConfig).single("imagem"), AssociacaoController.store);
+routes.get('/associacoes', AssociacaoController.index);
+routes.post('/associacoes/:id/imagem', multer(multerConfig).single("imagem"), AssociacaoController.storeImagem);
+routes.post('/associacoes/:id/endereco', AssociacaoController.storeEndereco);
+routes.post('/associacoes', AssociacaoController.store);
+routes.delete('/associacoes/:id', AssociacaoController.delete);
 
 module.exports = routes;

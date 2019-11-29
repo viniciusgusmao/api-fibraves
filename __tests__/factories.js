@@ -42,7 +42,18 @@ factory.define('TipoContato',models.TipoContato, {
 
 factory.define('Associacao',models.Associacao, {
   id: faker.random.number(),
-  nome: faker.company.companyName
+  nome: faker.company.companyName(),
+  imagem: null,
+  endereco_id: factory.assoc("Endereco","id")
+})
+
+factory.define('Evento',models.Evento, {
+  id: faker.random.number(),
+  nome: faker.commerce.productName(),
+  data: faker.date.future(),
+  horario: "13:00",
+  obs: faker.lorem.paragraph(2),
+  endereco_id: factory.assoc("Endereco","id")
 })
 
 module.exports = factory;

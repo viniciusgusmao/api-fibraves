@@ -85,8 +85,88 @@ module.exports = {
           }
       });
       // COLOCAR OPÇÃO PARA EXCLUIR A IMAGEM DA ASSOCIACAO SE TIVER
-
+      // ----------------------------------------------------------
       return res.status(200).json({success: "Associação excluída com sucesso."})
+    } catch(e) {
+      return res.status(403).json({error: String(e)})
     }
-  }
+  },
+  async storeUsuario(req, res){    
+    const { id } = req.params;
+    const { usuario_id, presidente } = req.body;
+    try {
+      const associacao = await models.Associacao.findByPk(id);   
+      
+      if (!associacao)
+        return res.status(400).json({ error: "Associação não encontrada." })
+
+      const usuario = await models.Usuario.findByPk(usuario_id);  
+      
+      if (!associacao.getAssociacoesUsuario())
+        await associacao.addAssociacaoUsuario(usuario,{ through: { presidente } });
+      else
+        await associacao.setAssociacoesUsuario(usuario,{ through: { presidente } });
+
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
+  async removeUsuario(req, res){    
+    const { associacao_id: id, usuario_id } = req.params;
+    try {
+      const associacao = await models.Associacao.findByPk(id);   
+      
+      if (!associacao)
+        return res.status(400).json({ error: "Associação não encontrado." })
+
+      const usuario = await models.Usuario.findByPk(usuario_id);  
+      
+      await associacao.removeAssociacaoUsuario(usuario);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
+  async storeEvento(req, res){    
+    const { id } = req.params;
+    const { evento_id } = req.body;
+    try {
+      const associacao = await models.Associacao.findByPk(id);   
+      
+      if (!associacao)
+        return res.status(400).json({ error: "Associação não encontrado." })
+
+      const evento = await models.Evento.findByPk(evento_id);  
+      
+      await associacao.addAssociacaoEvento(evento);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
+  async removeEvento(req, res){    
+    const { associacao_id: id, evento_id } = req.params;
+    try {
+      const associacao = await models.Associacao.findByPk(id);   
+      
+      if (!associacao)
+        return res.status(400).json({ error: "Associação não encontrada." })
+
+      const evento = await models.Evento.findByPk(evento_id);  
+      
+      await associacao.removeAssociacaoEvento(evento);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
 }

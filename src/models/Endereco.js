@@ -53,10 +53,6 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Endereco.associate = function(models){
-    Endereco.hasOne(models.Associacao, {
-      foreignKey: "endereco_id",
-      as: "EnderecoAssociacao"
-    });
     Endereco.hasOne(models.Evento, {
       foreignKey: "endereco_id",
       as: "EnderecoEvento"

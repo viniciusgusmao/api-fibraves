@@ -31,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    endereco_id: DataTypes.INTEGER
+    endereco_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    }
   },{
     tableName: "evento"
   });

@@ -117,6 +117,7 @@ module.exports = (sequelize, DataTypes) => {
     Usuario.belongsToMany(models.Associacao, {
       foreignKey: "usuario_id",
       through: models.UsuarioAssociacao,
+      onDelete: 'cascade',
       as: {
         singular: "UsuarioAssociacao",
         plural: "UsuariosAssociacao"

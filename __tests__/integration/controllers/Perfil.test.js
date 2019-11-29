@@ -10,28 +10,31 @@ describe("Rotas Perfil", () => {
     perfil = await factory.create("Perfil");
   })
   afterAll(async () => {
-    await models.Endereco.destroy({
-      where: {},
-      truncate: false,
-    })
+    const delModels = [ "Endereco" ];
+    for(let m of delModels){
+      await models[[m]].destroy({
+        where: {},
+        truncate: false
+      })
+    }
   })
-  it("GET /perfil", async () => {
+  it("GET /perfis", async () => {
     const response = await request(app)
-                               .get('/perfil');
+                               .get('/perfis');
     expect(response.statusCode).toBe(200)
   })
 
-  it("POST /perfil", async () => {
+  it("POST /perfis", async () => {
     const response = await request(app)
-                                .post('/perfil')
+                                .post('/perfis')
                                 .send({ nome: "Veterinario"} );
     expect(response.statusCode).toBe(200)      
   })
 
-  it("PUT /perfil/:id", async () => {
+  it("PUT /perfis/:id", async () => {
     try {
       const response = await request(app)
-                                  .put(`/perfil/${perfil.id}`)
+                                  .put(`/perfis/${perfil.id}`)
                                   .send({ nome: "Veterinario"} );
       expect(response.statusCode).toBe(200)      
     } catch(e) {
@@ -39,17 +42,17 @@ describe("Rotas Perfil", () => {
     }
   })
 
-  it("DELETE /perfil/:id", async () => {
+  it("DELETE /perfis/:id", async () => {
     try {
       const response = await request(app)
-                                  .delete(`/perfil/${perfil.id}`)
+                                  .delete(`/perfis/${perfil.id}`)
       expect(response.statusCode).toBe(200)    
     } catch(e) {
       // console.log("chegou aqui 9")      
     } 
   })
 
-  it("DELETE /perfil/:id should return status 400", async () => {
+  it("DELETE /perfis/:id should return status 400", async () => {
     try {
       const endereco = await factory.create("Endereco");
       const perfil = await factory.create("Perfil");
@@ -59,7 +62,7 @@ describe("Rotas Perfil", () => {
       const Perfil = await models.Perfil.findByPk(perfil.id);
       await Perfil.addUsuarioPerfil(Usuario);
       const response = await request(app)
-                                  .delete(`/perfil/${perfil.id}`)
+                                  .delete(`/perfis/${perfil.id}`)
       expect(response.statusCode).toBe(400)      
     } catch(e){
       // console.log("chegou aqui 10")      

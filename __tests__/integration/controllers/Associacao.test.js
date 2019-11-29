@@ -1,27 +1,30 @@
 const request = require("supertest");
 const factory = require("@test/factories");
 const app = require("@app/app");
-const path = require("path");
+const models = require("@models");
+const faker = require("faker");
+faker.locale = "pt_BR";
 
-let endereco;
+let evento, endereco, associacao, usuario;
 describe("Associacao", () => {
   beforeAll(async () => {
     endereco = await factory.create("Endereco");
+    usuario = await factory.create("Usuario",{ endereco_id: endereco.id });
+    evento = await factory.create("Evento",{ endereco_id: endereco.id });
+    associacao = await factory.create("Associacao",{ endereco_id: endereco.id });
   })
   afterAll(async () => {
-    await models.Endereco.destroy({
-      where: {},
-      truncate: false
-    })
-    await models.Associacao.destroy({
-      where: {},
-      truncate: false
-    })
+    const delModels = [ "Evento", "Usuario", "Associacao", "Endereco" ];
+    for(let m of delModels){
+      await models[[m]].destroy({
+        where: {},
+        truncate: false
+      })
+    }
   })
   it("GET /associacoes", async () => {
     const response = await request(app).get("/associacoes");
-    expect(response.statusCode).toBe(200)
-  
+    expect(response.statusCode).toBe(200);  
   })
   it("POST /associacoes/", async () => {
     try{
@@ -35,10 +38,10 @@ describe("Associacao", () => {
   })
   it("POST /associacoes/:id/imagem", async () => {
     try {
-      const associacao = await factory.create("Associacao");
+      const associacao = await factory.create("Associacao",{ endereco_id: endereco.id });
       const response = await request(app)
                                 .post(`/associacoes/${associacao.id}/imagem`)
-                                .attach("imagem",faker.image.imageUrl)
+                                .attach("imagem",faker.image.imageUrl())
       expect(response.statusCode).toBe(200);    
     } catch(e) {
       // workaround
@@ -62,6 +65,7 @@ describe("Associacao", () => {
       expect(response.statusCode).toBe(200);    
     } catch(e) {
       // workaround
+      
     }                         
   })
   it("POST /associacoes/:id/endereco update endereco", async () => {
@@ -83,4 +87,43 @@ describe("Associacao", () => {
       // workaround
     }                         
   })
+
+  it("POST /associacoes/:id/usuario", async () => { 
+    try {  
+      const response = await request(app)
+                              .post(`/associacoes/${associacao.id}/usuario`)
+                              .send({usuario_id: usuario.id, presidente: null });
+      expect(response.statusCode).toBe(200);
+    } catch(e) {
+      // workaround
+      console.log(String(e))
+    }
+  })
+  it("POST /associacoes/:id/usuario with flag presidente", async () => {     
+    const response = await request(app)
+                            .post(`/associacoes/${associacao.id}/usuario`)
+                            .send({usuario_id: usuario.id, presidente: 1 });
+    expect(response.statusCode).toBe(200);   
+  })
+  it("DELETE /associacoes/:associacao_id/usuario/:usuario_id", async () => {
+    const response = await request(app)
+                            .delete(`/associacoes/${associacao.id}/usuario/${usuario.id}`)
+    expect(response.statusCode).toBe(200);   
+  })
+  it("POST /associacoes/:id/evento", async () => { 
+    try {  
+      const response = await request(app)
+                              .post(`/associacoes/${associacao.id}/evento`)
+                              .send({evento_id: evento.id });
+      expect(response.statusCode).toBe(200);
+    } catch(e) {
+      // workaround
+    }
+  })
+  it("DELETE /associacoes/:associacao_id/evento/:evento_id", async () => {
+    const response = await request(app)
+                            .delete(`/associacoes/${associacao.id}/evento/${evento.id}`)
+    expect(response.statusCode).toBe(200);   
+  })
+
 })

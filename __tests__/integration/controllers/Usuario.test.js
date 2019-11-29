@@ -15,18 +15,13 @@ describe("Usuario", () => {
     usuario = await factory.create("Usuario", { endereco_id: endereco.id });
    })
    afterAll(async () => {
-     await models.Endereco.destroy({
-       where: {},
-       truncate: false
-     })
-     await models.TipoContato.destroy({
-       where: {},
-       truncate: false
-     })
-     await models.Perfil.destroy({
-       where: {},
-       truncate: false
-     })
+    const delModels = [ "Endereco", "TipoContato", "Perfil" ];
+    for(let m of delModels){
+      await models[[m]].destroy({
+        where: {},
+        truncate: false
+      })
+    }
    })
   it("GET /usuarios", async () => {
     const response = await request(app).get('/usuarios');

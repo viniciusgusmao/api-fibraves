@@ -19,7 +19,7 @@ module.exports = {
       },
       endereco_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: { model: 'endereco', key: 'id'},
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'

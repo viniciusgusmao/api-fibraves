@@ -40,4 +40,9 @@ factory.define('TipoContato',models.TipoContato, {
   validacao: "telefone"
 })
 
+factory.define('Associacao',models.Associacao, {
+  id: faker.random.number(),
+  nome: faker.company.companyName
+})
+
 module.exports = factory;

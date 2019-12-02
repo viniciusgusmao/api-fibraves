@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Campo NOME é obrigatório"
+          msg: "O campo NOME é obrigatório."
         }
       }
     },
@@ -17,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    endereco_id: DataTypes.INTEGER
+    endereco_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    }
   },{
     tableName: "associacao"
   });

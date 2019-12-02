@@ -33,6 +33,7 @@ routes.post('/associacoes/:id/imagem', multer(multerConfig).single("imagem"), As
 routes.post('/associacoes/:id/endereco', AssociacaoController.storeEndereco);
 routes.post('/associacoes', AssociacaoController.store);
 routes.post('/associacoes/:id/usuario', AssociacaoController.storeUsuario);
+routes.get('/associacoes/:id/usuarios', AssociacaoController.indexUsuario);
 routes.delete('/associacoes/:associacao_id/usuario/:usuario_id', AssociacaoController.removeUsuario);
 routes.post('/associacoes/:id/evento', AssociacaoController.storeEvento);
 routes.delete('/associacoes/:associacao_id/evento/:evento_id', AssociacaoController.removeEvento);

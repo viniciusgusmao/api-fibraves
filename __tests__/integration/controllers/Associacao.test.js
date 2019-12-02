@@ -13,15 +13,15 @@ describe("Associacao", () => {
     evento = await factory.create("Evento",{ endereco_id: endereco.id });
     associacao = await factory.create("Associacao",{ endereco_id: endereco.id });
   })
-  afterAll(async () => {
-    const delModels = [ "Evento", "Usuario", "Associacao", "Endereco" ];
-    for(let m of delModels){
-      await models[[m]].destroy({
-        where: {},
-        truncate: false
-      })
-    }
-  })
+  // afterAll(async () => {
+  //   const delModels = [ "Evento", "Usuario", "Associacao", "Endereco" ];
+  //   for(let m of delModels){
+  //     await models[[m]].destroy({
+  //       where: {},
+  //       truncate: false
+  //     })
+  //   }
+  // })
   it("GET /associacoes", async () => {
     const response = await request(app).get("/associacoes");
     expect(response.statusCode).toBe(200);  
@@ -97,6 +97,22 @@ describe("Associacao", () => {
     } catch(e) {
       // workaround
       console.log(String(e))
+    }
+  })
+  it.only("GET /associacoes/:id/usuarios", async () => { 
+    try {  
+      await factory.create("Usuario",{ id: faker.random.number(), endereco_id: endereco.id, email: faker.internet.email() });
+      await factory.create("Usuario",{ id: faker.random.number(), endereco_id: endereco.id, email: faker.internet.email() });      
+      const usuarios = await models.Usuario.findAll();
+      const associacao_ = await models.Associacao.findByPk(associacao.id);
+      for(let u of usuarios){
+        let usuario = await models.Usuario.findByPk(u.id);
+        await associacao_.addAssociacaoUsuario(usuario);
+      }
+      const response = await request(app).get(`/associacoes/${associacao.id}/usuarios`)
+      expect(response.statusCode).toBe(200);
+    } catch(e) {
+      console.log("aquiii - "+String(e))
     }
   })
   it("POST /associacoes/:id/usuario with flag presidente", async () => {     

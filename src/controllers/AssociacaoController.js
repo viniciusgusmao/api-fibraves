@@ -114,6 +114,17 @@ module.exports = {
       return res.status(403).json({ error: String(e) });
     } 
   },
+  async indexUsuario(req,res) {
+    const { id } = req.params;
+    try {      
+      const associacoes = await models.Associacao.findByPk(id);
+      const usuarios = await associacoes.getAssociacoesUsuario();
+      return res.status(200).json(usuarios);
+    } catch(e) {
+      // console.log("ou aquii"+String(e));
+      return res.status(403).json({ error: String(e) });
+    }
+  },
   async removeUsuario(req, res){    
     const { associacao_id: id, usuario_id } = req.params;
     try {

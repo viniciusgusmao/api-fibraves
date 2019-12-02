@@ -21,7 +21,7 @@ module.exports = {
     try {
       const { id } = req.params;
       const { filename: imagem } = req.file;
-      const associacao = await models.Associacao.update({
+      await models.Associacao.update({
         imagem
       }, {
         where: {

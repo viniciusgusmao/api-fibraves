@@ -117,11 +117,38 @@ module.exports = {
   async indexUsuario(req,res) {
     const { id } = req.params;
     try {      
-      const associacoes = await models.Associacao.findByPk(id);
-      const usuarios = await associacoes.getAssociacoesUsuario();
-      return res.status(200).json(usuarios);
+      const associacoes = await models.Associacao.findAll({
+        where: {
+          id
+        },
+        attributes: [ 'nome' ],
+        include: [
+          {
+            model: models.Usuario,
+            as: 'AssociacoesUsuario',
+            attributes: ["nome","email"],
+            through: {
+              attributes: ["presidente"],
+              where: {
+                presidente: false
+              }
+            },
+            include: [
+              {
+                model: models.Endereco,
+                as: "endereco",
+                attributes: ["rua","complemento","numero","cep","cidade","estado"]
+              },
+              {
+                association: "contatos"
+              }
+            ]            
+          }
+        ]
+      });      
+      return res.status(200).json({ usuarios: associacoes });
     } catch(e) {
-      // console.log("ou aquii"+String(e));
+      console.log("ou aquii"+String(e));
       return res.status(403).json({ error: String(e) });
     }
   },

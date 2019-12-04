@@ -13,15 +13,15 @@ describe("Associacao", () => {
     evento = await factory.create("Evento",{ endereco_id: endereco.id });
     associacao = await factory.create("Associacao",{ endereco_id: endereco.id });
   })
-  // afterAll(async () => {
-  //   const delModels = [ "Evento", "Usuario", "Associacao", "Endereco" ];
-  //   for(let m of delModels){
-  //     await models[[m]].destroy({
-  //       where: {},
-  //       truncate: false
-  //     })
-  //   }
-  // })
+  afterAll(async () => {
+    const delModels = [ "Evento", "Usuario", "Associacao", "Endereco" ];
+    for(let m of delModels){
+      await models[[m]].destroy({
+        where: {},
+        truncate: false
+      })
+    }
+  })
   it("GET /associacoes", async () => {
     const response = await request(app).get("/associacoes");
     expect(response.statusCode).toBe(200);  
@@ -109,8 +109,8 @@ describe("Associacao", () => {
         let usuario = await models.Usuario.findByPk(u.id);
         await associacao_.addAssociacaoUsuario(usuario);
       }
-      const response = await request(app).get(`/associacoes/${associacao.id}/usuarios`)
-      expect(response.statusCode).toBe(200);
+      const response = await request(app).get(`/associacoes/${associacao.id}/usuarios`);      
+      expect(response.statusCode).toBe(200)
     } catch(e) {
       console.log("aquiii - "+String(e))
     }

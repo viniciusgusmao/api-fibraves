@@ -121,7 +121,7 @@ module.exports = {
         where: {
           id
         },
-        attributes: [ 'nome' ],
+        attributes: [ 'nome', "imagem" ],
         include: [
           {
             model: models.Usuario,

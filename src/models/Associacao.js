@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
       through: models.UsuarioAssociacao,
       onDelete: 'cascade',
       as: {
-        singular: "AssociacaoUsuario",
-        plural: "AssociacoesUsuario"
+        singular: "Usuario",
+        plural: "Usuarios"
       }
     });
     Associacao.belongsToMany(models.Evento, {
@@ -40,8 +40,8 @@ module.exports = (sequelize, DataTypes) => {
       through: "associacao_evento",
       onDelete: 'cascade',
       as: {
-        singular: "AssociacaoEvento",
-        plural: "AssociacoesEvento"
+        singular: "Evento",
+        plural: "Eventos"
       }
     });
     Associacao.belongsTo(models.Endereco, {

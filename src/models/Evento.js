@@ -68,10 +68,11 @@ module.exports = (sequelize, DataTypes) => {
       through: "passaro_evento",
       as: "PassaroEvento"
     });
-    Evento.hasOne(models.Endereco, {
+    Evento.belongsTo(models.Endereco, {
       foreignKey: "endereco_id",
-      as: "EventoEndereco"
-    });
+      onDelete: "cascade",
+      as: 'endereco'
+    })
     Evento.hasMany(models.Fase, {
       foreignKey: "evento_id",
       as: "FaseEvento"

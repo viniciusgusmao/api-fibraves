@@ -14,7 +14,7 @@ describe("Associacao", () => {
     associacao = await factory.create("Associacao",{ endereco_id: endereco.id });
   })
   afterAll(async () => {
-    const delModels = [ "Evento", "Usuario", "Associacao", "Endereco" ];
+    const delModels = [ "UsuarioAssociacao", "Evento", "Usuario", "Associacao", "Endereco" ];
     for(let m of delModels){
       await models[[m]].destroy({
         where: {},
@@ -92,7 +92,7 @@ describe("Associacao", () => {
     try {  
       const response = await request(app)
                               .post(`/associacoes/${associacao.id}/usuario`)
-                              .send({usuario_id: usuario.id, presidente: null });
+                              .send({usuario_id: usuario.id, presidente: 0 });
       expect(response.statusCode).toBe(200);
     } catch(e) {
       // workaround
@@ -104,8 +104,20 @@ describe("Associacao", () => {
       const usuario_ = await models.Usuario.findOne();
       const associacao_ = await models.Associacao.findByPk(associacao.id);      
       const usuario = await models.Usuario.findByPk(usuario_.id);
-      await associacao_.addAssociacaoUsuario(usuario);      
-      const response = await request(app).get(`/associacoes/${associacao.id}/usuarios`);      
+      await associacao_.addUsuario(usuario);      
+      const response = await request(app).get(`/associacoes/${associacao.id}/usuarios`);
+      expect(response.statusCode).toBe(200);
+    } catch(e) {
+      console.log("aquiii - "+String(e))
+    }
+  })
+  it("GET /associacoes/:id/eventos", async () => { 
+    try {       
+      const evento_ = await models.Evento.findOne();
+      const associacao_ = await models.Associacao.findByPk(associacao.id);      
+      const evento = await models.Evento.findByPk(evento_.id);
+      await associacao_.addEvento(evento);      
+      const response = await request(app).get(`/associacoes/${associacao.id}/eventos`);
       expect(response.statusCode).toBe(200);
     } catch(e) {
       console.log("aquiii - "+String(e))
@@ -118,24 +130,31 @@ describe("Associacao", () => {
     expect(response.statusCode).toBe(200);   
   })
   it("DELETE /associacoes/:associacao_id/usuario/:usuario_id", async () => {
-    const response = await request(app)
-                            .delete(`/associacoes/${associacao.id}/usuario/${usuario.id}`)
-    expect(response.statusCode).toBe(200);   
-  })
-  it("POST /associacoes/:id/evento", async () => { 
     try {  
+      const usuario_ = await models.Usuario.findOne();
+      const associacao_ = await models.Associacao.findByPk(associacao.id);   
+      console.log(usuario_.id);   
+      const usuario = await models.Usuario.findByPk(usuario_.id);
+      await associacao_.addUsuario(usuario);      
       const response = await request(app)
-                              .post(`/associacoes/${associacao.id}/evento`)
-                              .send({evento_id: evento.id });
-      expect(response.statusCode).toBe(200);
+                              .delete(`/associacoes/${associacao.id}/usuario/${usuario.id}`)
+      expect(response.statusCode).toBe(200);   
     } catch(e) {
       // workaround
     }
   })
-  it("DELETE /associacoes/:associacao_id/evento/:evento_id", async () => {
-    const response = await request(app)
-                            .delete(`/associacoes/${associacao.id}/evento/${evento.id}`)
-    expect(response.statusCode).toBe(200);   
+  it("DELETE /associacoes/:associacao_id/evento/:evento_id", async () => { 
+    try {  
+      const evento_ = await models.Evento.findOne();
+      const associacao_ = await models.Associacao.findByPk(associacao.id);      
+      const evento = await models.Evento.findByPk(evento_.id);
+      await associacao_.addEvento(evento);      
+      const response = await request(app)
+                              .delete(`/associacoes/${associacao.id}/evento/${evento.id}`)
+      expect(response.statusCode).toBe(200);
+    } catch(e) {
+      // workaround
+    }
   })
 
 })

@@ -102,11 +102,13 @@ module.exports = {
 
       const usuario = await models.Usuario.findByPk(usuario_id);  
       
-      if (!associacao.getAssociacoesUsuario())
-        await associacao.addAssociacaoUsuario(usuario,{ through: { presidente } });
-      else
-        await associacao.setAssociacoesUsuario(usuario,{ through: { presidente } });
-
+      if (!associacao.getUsuarios()){
+        await associacao.addUsuario(usuario,{ through: { presidente } });
+        console.log("pri")
+      } else {
+        console.log("seg")
+        await associacao.setUsuarios(usuario,{ through: { presidente } });
+      }
       return res.status(200).json({ success: true });
     
     } catch(e){
@@ -117,7 +119,7 @@ module.exports = {
   async indexUsuario(req,res) {
     const { id } = req.params;
     try {      
-      const associacoes = await models.Associacao.findAll({
+      const associacao = await models.Associacao.findOne({
         where: {
           id
         },
@@ -125,7 +127,7 @@ module.exports = {
         include: [
           {
             model: models.Usuario,
-            as: 'AssociacoesUsuario',
+            as: 'Usuarios',
             attributes: ["nome","email"],
             through: {
               attributes: ["presidente"],
@@ -146,7 +148,36 @@ module.exports = {
           }
         ]
       });      
-      return res.status(200).json({ usuarios: associacoes });
+      return res.status(200).json({ associacao });
+    } catch(e) {
+      console.log("ou aquii"+String(e));
+      return res.status(403).json({ error: String(e) });
+    }
+  },
+  async indexEvento(req,res) {
+    const { id } = req.params;
+    try {      
+      const associacao = await models.Associacao.findOne({
+        where: {
+          id
+        },
+        attributes: [ 'nome', "imagem" ],
+        include: [
+          {
+            model: models.Evento,
+            as: 'Eventos',
+            attributes: ["nome","data", "horario", "obs"],            
+            include: [
+              {
+                model: models.Endereco,
+                as: "endereco",
+                attributes: ["rua","complemento","numero","cep","cidade","estado"]
+              }
+            ]            
+          }
+        ]
+      });      
+      return res.status(200).json({ associacao });
     } catch(e) {
       console.log("ou aquii"+String(e));
       return res.status(403).json({ error: String(e) });
@@ -158,11 +189,29 @@ module.exports = {
       const associacao = await models.Associacao.findByPk(id);   
       
       if (!associacao)
-        return res.status(400).json({ error: "Associação não encontrado." })
+        return res.status(400).json({ error: "Associação não encontrada." })
 
       const usuario = await models.Usuario.findByPk(usuario_id);  
       
-      await associacao.removeAssociacaoUsuario(usuario);
+      await associacao.removeUsuario(usuario);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
+  async removeEvento(req, res){    
+    const { associacao_id: id, evento_id } = req.params;
+    try {
+      const associacao = await models.Associacao.findByPk(id);   
+      
+      if (!associacao)
+        return res.status(400).json({ error: "Associação não encontrada." })
+
+      const evento = await models.Evento.findByPk(evento_id);  
+      
+      await associacao.removeEvento(evento);
       return res.status(200).json({ success: true });
     
     } catch(e){

@@ -5,6 +5,7 @@ const UsuarioController = require("@controllers/UsuarioController");
 const PerfilController = require("@controllers/PerfilController");
 const TipoContatoController = require("@controllers/TipoContatoController");
 const AssociacaoController = require("@controllers/AssociacaoController");
+const EventoController = require("@controllers/EventoController");
 const multerConfig = require("@app/config/multerConfig");
 
 const routes = express.Router();
@@ -39,5 +40,18 @@ routes.delete('/associacoes/:associacao_id/usuario/:usuario_id', AssociacaoContr
 routes.post('/associacoes/:id/evento', AssociacaoController.storeEvento);
 routes.delete('/associacoes/:associacao_id/evento/:evento_id', AssociacaoController.removeEvento);
 routes.delete('/associacoes/:id', AssociacaoController.delete);
+
+routes.get('/eventos', EventoController.index);
+routes.get('/eventos/:id', EventoController.show);
+routes.post('/eventos', EventoController.store);
+routes.delete('/evento/:id', EventoController.delete);
+routes.put('/eventos/:id', EventoController.update);
+routes.post('/eventos/:id/endereco', EventoController.index);
+routes.post('/eventos/:id/usuario', EventoController.storeUsuario);
+routes.get('/eventos/:id/usuarios', EventoController.indexUsuario);
+routes.delete('/evento/:evento_id/usuario/:usuario_id', EventoController.removeUsuario);
+routes.get('/eventos/:id/associacoes', EventoController.indexAssociacao);
+routes.post('/eventos/:id/associacao', EventoController.storeAssociacao);
+routes.delete('/evento/:evento_id/associacao/:associacao_id', EventoController.removeAssociacao);
 
 module.exports = routes;

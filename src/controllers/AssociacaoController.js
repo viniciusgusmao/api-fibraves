@@ -248,7 +248,7 @@ module.exports = {
 
       const evento = await models.Evento.findByPk(evento_id);  
       
-      await associacao.removeAssociacaoEvento(evento);
+      await associacao.removeEvento(evento);
       return res.status(200).json({ success: true });
     
     } catch(e){

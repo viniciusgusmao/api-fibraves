@@ -125,8 +125,11 @@ module.exports = (sequelize, DataTypes) => {
     });
     Usuario.belongsToMany(models.Evento, {
       foreignKey: "usuario_id",
-      through: "inscricao",
-      as: "InscricaoEvento"
+      through: models.Inscricao,
+      as: {
+        singular: "Evento",
+        plural: "Eventos"
+      }
     });
     Usuario.belongsTo(models.Endereco, {
       foreignKey: "endereco_id",

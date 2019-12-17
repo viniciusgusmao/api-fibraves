@@ -42,15 +42,18 @@ module.exports = (sequelize, DataTypes) => {
   Evento.associate = function(models){
     Evento.belongsToMany(models.Usuario, {
       foreignKey: "evento_id",
-      through: "inscricao",
-      as: "EventoInscricao"
+      through: models.Inscricao,
+      as: {
+        singular: "Usuario",
+        plural: "Usuarios"
+      }
     });
     Evento.belongsToMany(models.Associacao, {
       foreignKey: "evento_id",
       through: "associacao_evento",
       as: {
-        singular: "EventoAssociacao",
-        plural: "EventosAssociacao"
+        singular: "Associacao",
+        plural: "Associacoes"
       }
     });
     Evento.belongsToMany(models.FormaPagamento, {

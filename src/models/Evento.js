@@ -59,12 +59,18 @@ module.exports = (sequelize, DataTypes) => {
     Evento.belongsToMany(models.FormaPagamento, {
       foreignKey: "evento_id",
       through: "evento_formapagamento",
-      as: "FormapagamentoEvento"
+      as: {
+        singular: "FormaPagamento",
+        plural: "FormasPagamento"
+      }
     });
     Evento.belongsToMany(models.Especie, {
       foreignKey: "evento_id",
       through: "evento_especie",
-      as: "EspecieEvento"
+      as: {
+        singular: "Especie",
+        plural: "Especies"
+      }
     });
     Evento.belongsToMany(models.Passaro, {
       foreignKey: "evento_id",

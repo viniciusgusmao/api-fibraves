@@ -3,9 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     nome: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: "Este nome de espécie já está em uso no sistema."
+      },
       validate: {
         notEmpty: {
-          msg: "Campo NOME é obrigatório"
+          msg: "O campo NOME é obrigatório."
         }
       }
     }
@@ -17,11 +21,14 @@ module.exports = (sequelize, DataTypes) => {
     Especie.belongsToMany(models.Evento, {
       foreignKey: "especie_id",
       through: "evento_especie",
-      as: "EventoEspecie"
+      as: {
+        singular: "Evento",
+        plural: "Eventos"
+      }
     });
     Especie.hasMany(models.Passaro, {
       foreignKey: "especie_id",
-      as: "PassarosEspecie"
+      as: "Passaros"
     })
     Especie.hasMany(models.Fase, {
       foreignKey: "especie_id",

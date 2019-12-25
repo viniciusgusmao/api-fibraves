@@ -28,6 +28,17 @@ module.exports = {
             association: "perfis" 
           }, 
           {
+            model: models.Passaro,
+            as: 'passaros',
+            attributes: [ "nome", "anilha", "nascimento", "sexo", "documento", "foto" ],
+            include: [
+              {
+                association: "especie",
+                attributes: [ "nome" ]
+              }
+            ]
+          },
+          {
             model: models.Endereco,
             as: 'endereco',
             attributes: [ "rua", "cep", "complemento", "numero", "cidade", "estado" ]
@@ -195,6 +206,51 @@ module.exports = {
       console.log(String(e))
       return res.status(400).json({error: String(e)})
     }
+  },
+  async storePassaro(req,res){
+    const { usuario_id } = req.params;
+    const { nome, anilha, nascimento, sexo, documento, foto, especie_id } = req.body; 
+    try {
+      const usuario = await models.Usuario.findByPk(usuario_id);
+      if (!usuario)
+        return res.status(400).json({error: "Usuário não encontrado."});
+  
+      await models.Passaro.create({
+        nome, anilha, nascimento, sexo, documento, foto, usuario_id, especie_id 
+      })
+      return res.status(200).json({success: true})
+    } catch(e){
+      return res.status(400).json({error: String(e)})
+    }
+  },
+  async updatePassaro(req,res){
+    const { id } = req.params;
+    const { nome, anilha, nascimento, sexo, documento, foto, usuario_id, especie_id } = req.body; 
+    try {
+      const passaro = await models.Passaro.findByPk(id);
+      if (!passaro)
+        return res.status(400).json({error: "Pássaro não encontrado."});
+  
+      await models.Passaro.update({
+        nome, anilha, nascimento, sexo, documento, foto, usuario_id, especie_id 
+      }, {
+        where: {
+          id
+        }
+      })
+      return res.status(200).json({success: true})
+    } catch(e){
+      return res.status(400).json({error: String(e)})
+    }
+  },
+  async removePassaro(req,res){
+    const { id } = req.params;
+    try {
+      // VERIFICAR RELACIONAMENTO MARCACAO E PASSARO_EVENTO
+    } catch(e) {
+      return res.status(400).json({error: String(e)})
+    }
+
   }
   
 }

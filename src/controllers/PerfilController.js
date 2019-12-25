@@ -5,6 +5,15 @@ module.exports = {
     const perfil = await models.Perfil.findAll();
     return res.status(200).json(perfil);
   },
+  async show(req,res) {
+    const { id } = req.params;
+    const perfil = await models.Perfil.findByPk(id);
+
+    if (!perfil)
+      return res.status(400).json({error: "Perfil não encontrado."})
+
+    return res.status(200).json(perfil);
+  },
   async store(req,res) {
     const { nome } = req.body;
     try {

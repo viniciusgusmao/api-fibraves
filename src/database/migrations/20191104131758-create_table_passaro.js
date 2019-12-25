@@ -16,6 +16,7 @@ module.exports = {
         anilha: {
           type: Sequelize.STRING,
           allowNull: false,
+          unique: true
         },
         nascimento: {
           type: Sequelize.DATEONLY,

@@ -12,7 +12,9 @@ describe("Usuario", () => {
     endereco = await factory.create("Endereco");
     perfil = await factory.create("Perfil");
     tipoContato = await factory.create("TipoContato");
+    especie = await factory.create("Especie");
     usuario = await factory.create("Usuario", { endereco_id: endereco.id });
+    passaro = await factory.create("Passaro", { usuario_id: usuario.id, especie_id: especie.id });
    })
    afterAll(async () => {
     const delModels = [ "Endereco", "TipoContato", "Perfil" ];
@@ -138,5 +140,35 @@ describe("Usuario", () => {
                             .delete(`/usuarios/${usuario.id}/perfil`)
                             .send({perfil_id: perfil.id });
     expect(response.statusCode).toBe(200);
+  })
+
+  it("POST /usuarios/:usuario_id/passaro should return status 200", async () => { 
+    const response = await request(app)
+                            .post(`/usuarios/${usuario.id}/passaro`)
+                            .send({ 
+                              nome: passaro.nome,
+                              anilha: faker.random.uuid(),
+                              nascimento: passaro.nascimento,
+                              sexo: passaro.sexo,
+                              documento: passaro.documento,
+                              foto: passaro.foto,
+                              especie: especie.id
+                            })
+    expect(response.statusCode).toBe(200);                            
+  })
+  it.only("PUT /passaros/:id should return status 200", async () => { 
+    const response = await request(app)
+                            .put(`/passaros/${passaro.id}`)
+                            .send({ 
+                              nome: passaro.nome,
+                              anilha: faker.random.uuid(),
+                              nascimento: passaro.nascimento,
+                              sexo: passaro.sexo,
+                              documento: "flamengo",
+                              foto: "flamengo",
+                              especie: especie.id,
+                              passaro_id: passaro.id
+                            })
+    expect(response.statusCode).toBe(200);                            
   })
 })

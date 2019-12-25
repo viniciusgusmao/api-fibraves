@@ -232,5 +232,79 @@ module.exports = {
       console.log(String(e));
       return res.status(403).json({ error: String(e) });
     } 
-  }  
+  },
+  async storeEspecie(req, res){    
+    const { id } = req.params;
+    const { especie_id } = req.body;
+    try {
+      const evento = await models.Evento.findByPk(id);   
+      
+      if (!evento)
+        return res.status(400).json({ error: "Evento não encontrado." })
+
+      const especie = await models.Especie.findByPk(especie_id);  
+      
+      await evento.addEspecie(especie);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
+  async removeEspecie(req, res){    
+    const { evento_id: id, especie_id } = req.params;
+    try {
+      const evento = await models.Evento.findByPk(id);   
+      
+      if (!evento)
+        return res.status(400).json({ error: "Evento não encontrado." })
+
+      const especie = await models.Especie.findByPk(especie_id);  
+      
+      await evento.removeEspecie(especie);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
+  async storeFormaPagamento(req, res){    
+    const { id } = req.params;
+    const { formapagamento_id } = req.body;
+    try {
+      const evento = await models.Evento.findByPk(id);   
+      
+      if (!evento)
+        return res.status(400).json({ error: "Evento não encontrado." })
+
+      const formapagamento = await models.FormaPagamento.findByPk(formapagamento_id);  
+      
+      await evento.addFormaPagamento(formapagamento);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
+  async removeFormaPagamento(req, res){    
+    const { evento_id: id, formapagamento_id } = req.params;
+    try {
+      const evento = await models.Evento.findByPk(id);   
+      
+      if (!evento)
+        return res.status(400).json({ error: "Evento não encontrado." })
+
+      const formapagamento = await models.FormaPagamento.findByPk(formapagamento_id);  
+      
+      await evento.removeFormaPagamento(formapagamento);
+      return res.status(200).json({ success: true });
+    
+    } catch(e){
+      console.log(String(e));
+      return res.status(403).json({ error: String(e) });
+    } 
+  },
 }

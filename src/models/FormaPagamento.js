@@ -3,9 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     nome: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: "Este tipo de forma de pagamento já está em uso no sistema."
+      },
       validate: {
         notEmpty: {
-          msg: "Campo NOME é obrigatório"
+          msg: "O campo NOME é obrigatório."
         }
       }
     }
@@ -17,7 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     FormaPagamento.belongsToMany(models.Evento, {
       foreignKey: "formapagamento_id",
       through: "evento_formapagamento",
-      as: "EventoFormapagamento"
+      as: {
+        singular: "Evento",
+        plural: "Eventos"
+      }
     });
   }
 

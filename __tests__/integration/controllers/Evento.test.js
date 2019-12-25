@@ -11,17 +11,19 @@ describe("Evento", () => {
     endereco = await factory.create("Endereco");
     usuario = await factory.create("Usuario",{ endereco_id: endereco.id });
     evento = await factory.create("Evento",{ endereco_id: endereco.id });
+    especie = await factory.create("Especie");
+    formaPagamento = await factory.create("FormaPagamento");
     associacao = await factory.create("Associacao",{ endereco_id: endereco.id });
   })
-  // afterAll(async () => {
-  //   const delModels = [ "Evento", "Usuario", "Associacao", "Endereco" ];
-  //   for(let m of delModels){
-  //     await models[[m]].destroy({
-  //       where: {},
-  //       truncate: false
-  //     })
-  //   }
-  // })
+  afterAll(async () => {
+    const delModels = [ "Evento", "Usuario", "Associacao", "Endereco", "Especie" ];
+    for(let m of delModels){
+      await models[[m]].destroy({
+        where: {},
+        truncate: false
+      })
+    }
+  })
   it("GET /eventos", async () => {
     const response = await request(app).get("/eventos");
     expect(response.statusCode).toBe(200);  
@@ -155,6 +157,70 @@ describe("Evento", () => {
                                 associacao_id: associacao.id
                               });
       expect(response.statusCode).toBe(200);
+    } catch(e) {
+      // workaround
+    }
+  })
+  it("POST /eventos/:id/associacao", async () => { 
+    try {  
+      const response = await request(app)
+                              .post(`/eventos/${evento.id}/associacao`)
+                              .send({
+                                associacao_id: associacao.id
+                              });
+      expect(response.statusCode).toBe(200);
+    } catch(e) {
+      // workaround
+    }
+  })
+  it("POST /eventos/:id/especie", async () => { 
+    try {  
+      const response = await request(app)
+                              .post(`/eventos/${evento.id}/especie`)
+                              .send({
+                                especie_id: especie.id
+                              });
+      expect(response.statusCode).toBe(200);
+    } catch(e) {
+      // workaround
+    }
+  })
+  it("DELETE /eventos/:evento_id/especie/:especie_id", async () => {
+    try {  
+      const evento_ = await models.Evento.findOne();
+      const especie_ = await models.Especie.findByPk(especie.id);  
+      
+      const evento = await models.Evento.findByPk(evento_.id);
+      await especie_.addEvento(evento);      
+      const response = await request(app)
+                              .delete(`/evento/${evento.id}/especie/${especie.id}`)
+                              expect(response.statusCode).toBe(200);   
+                            } catch(e) {
+      // workaround
+    }
+  })
+  it("POST /eventos/:id/formapagamento", async () => { 
+    try {  
+      const response = await request(app)
+                              .post(`/eventos/${evento.id}/formapagamento`)
+                              .send({
+                                formapagamento_id: formaPagamento.id
+                              });
+      expect(response.statusCode).toBe(200);
+    } catch(e) {
+      // workaround
+    }
+  })
+  it.only("DELETE /eventos/:evento_id/formapagamento/:formapagamento_id", async () => {
+    try {  
+      const evento_ = await models.Evento.findOne();
+      const formapagamento_ = await models.FormaPagamento.findByPk(formapagamento.id);  
+      
+      const evento = await models.Evento.findByPk(evento_.id);
+      await formapagamento_.addEvento(evento);      
+      const response = await request(app)
+                              .delete(`/evento/${evento.id}/formapagamento/${formapagamento.id}`)
+                              expect(response.statusCode).toBe(200);   
     } catch(e) {
       // workaround
     }

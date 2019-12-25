@@ -3,6 +3,7 @@ const multer = require("multer");
 
 const UsuarioController = require("@controllers/UsuarioController");
 const PerfilController = require("@controllers/PerfilController");
+const EspecieController = require("@controllers/EspecieController");
 const TipoContatoController = require("@controllers/TipoContatoController");
 const AssociacaoController = require("@controllers/AssociacaoController");
 const EventoController = require("@controllers/EventoController");
@@ -18,6 +19,11 @@ routes.get('/usuarios',UsuarioController.index);
 routes.get('/usuarios/:usuario_id',UsuarioController.show);
 routes.post('/usuarios/:usuario_id/contato',UsuarioController.storeContato);
 routes.put('/usuarios/contato/:contato_id',UsuarioController.updateContato);
+routes.post('/usuarios/:usuario_id/passaro',UsuarioController.storePassaro);
+
+routes.put('/passaros/:id',UsuarioController.updatePassaro);
+routes.delete('/passaros/:id',UsuarioController.removePassaro);
+// routes.post('/usuarios/:usuario_id/historico_passaro/:passaro_id',UsuarioController.storeHistoricoPassaro);
 
 routes.post('/tiposcontatos',TipoContatoController.store);
 routes.get('/tiposcontatos',TipoContatoController.index);
@@ -28,6 +34,13 @@ routes.post('/perfis',PerfilController.store);
 routes.put('/perfis/:id',PerfilController.update);
 routes.delete('/perfis/:id',PerfilController.delete);
 routes.get('/perfis',PerfilController.index);
+routes.get('/perfis/:id',PerfilController.show);
+
+routes.post('/especies',EspecieController.store);
+routes.put('/especies/:id',EspecieController.update);
+routes.delete('/especies/:id',EspecieController.delete);
+routes.get('/especies',EspecieController.index);
+routes.get('/especies/:id',EspecieController.show);
 
 routes.get('/associacoes', AssociacaoController.index);
 routes.post('/associacoes/:id/imagem', multer(multerConfig).single("imagem"), AssociacaoController.storeImagem);
@@ -53,5 +66,9 @@ routes.delete('/evento/:evento_id/usuario/:usuario_id', EventoController.removeU
 routes.get('/eventos/:id/associacoes', EventoController.indexAssociacao);
 routes.post('/eventos/:id/associacao', EventoController.storeAssociacao);
 routes.delete('/evento/:evento_id/associacao/:associacao_id', EventoController.removeAssociacao);
+routes.post('/eventos/:id/especie', EventoController.storeEspecie);
+routes.delete('/evento/:evento_id/especie/:especie_id', EventoController.removeEspecie);
+routes.post('/eventos/:id/formapagamento', EventoController.storeFormaPagamento);
+routes.delete('/evento/:evento_id/formapagamento/:formapagamento_id', EventoController.removeFormaPagamento);
 
 module.exports = routes;

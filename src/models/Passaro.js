@@ -5,16 +5,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Campo NOME é obrigatório"
+          msg: "O campo NOME é obrigatório."
         }
       }
     },
     anilha: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: "Esta anilha já está em uso no sistema."
+      },
       validate: {
         notEmpty: {
-          msg: "Campo ANILHA é obrigatório"
+          msg: "O campo ANILHA é obrigatório."
         }
       }
     },
@@ -27,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Campo SEXO é obrigatório"
+          msg: "O campo SEXO é obrigatório."
         }
       }
     },
@@ -51,11 +55,11 @@ module.exports = (sequelize, DataTypes) => {
   Passaro.associate = function(models){
     Passaro.belongsTo(models.Usuario, {
       foreignKey: "usuario_id",
-      as: "Dono"
+      as: "usuario"
     });
     Passaro.belongsTo(models.Especie, {
       foreignKey: "especie_id",
-      as: "EspeciePassaros"
+      as: "especie"
     });
     Passaro.belongsToMany(models.Usuario, {
       foreignKey: "usuario_id",

@@ -34,6 +34,16 @@ factory.define('Perfil',models.Perfil, {
   nome: faker.name.findName()
 })
 
+factory.define('Especie',models.Especie, {
+  id: faker.random.number(),
+  nome: faker.name.findName()
+})
+
+factory.define('FormaPagamento',models.FormaPagamento, {
+  id: faker.random.number(),
+  nome: faker.name.findName()
+})
+
 factory.define('TipoContato',models.TipoContato, {
   id: faker.random.number(),
   nome: "Telefone",
@@ -54,6 +64,18 @@ factory.define('Evento',models.Evento, {
   horario: "13:00",
   obs: faker.lorem.paragraph(2),
   endereco_id: factory.assoc("Endereco","id")
+})
+
+factory.define('Passaro',models.Passaro, {
+  id: faker.random.number(),
+  nome: faker.commerce.productName(),
+  anilha: faker.random.uuid(),
+  nascimento: faker.date.past(),
+  sexo: "M",
+  documento: faker.system.fileName(),
+  foto: faker.system.fileName(),
+  usuario_id: factory.assoc("Usuario","id"),
+  especie_id: factory.assoc("Especie","id")
 })
 
 module.exports = factory;
